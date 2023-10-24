@@ -4,10 +4,94 @@ GO
 
 --------------------DROPS PREVENTIVOS ---------------------------
 
--------------DROP PREVENTIVO DE SCHEMA----------------------------
-IF EXISTS (SELECT name FROM sys.schemas WHERE name = 'LAS_CUATRO_CIFRAS')
-DROP SCHEMA LAS_CUATRO_CIFRAS
-GO
+
+---------------DROP PREVENTIVO DE FOREIGN KEYS---------------------
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'provincia_direccion_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.direccion DROP CONSTRAINT provincia_direccion_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'localidad_direccion_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.direccion DROP CONSTRAINT localidad_direccion_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'barrio_direccion_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.direccion DROP CONSTRAINT barrio_direccion_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'tipo_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT tipo_inmueble_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'propietario_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT propietario_inmueble_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'direccion_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT direccion_inmueble_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'disposicion_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT disposicion_inmueble_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'orientacion_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT orientacion_inmueble_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'estado_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT estado_inmueble_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'inmueble_caracteristica_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble_caracteristica DROP CONSTRAINT inmueble_caracteristica_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'caracteristica_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.inmueble_caracteristica DROP CONSTRAINT caracteristica_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'direccion_sucursal_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.sucursal DROP CONSTRAINT direccion_sucursal_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'sucursal_agente_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.agente DROP CONSTRAINT sucursal_agente_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'agente_anuncio_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.anuncio DROP CONSTRAINT agente_anuncio_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'tipo_operacion_anuncio_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.anuncio DROP CONSTRAINT tipo_operacion_anuncio_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'inmueble_anuncio_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.anuncio DROP CONSTRAINT inmueble_anuncio_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'moneda_anuncio_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.anuncio DROP CONSTRAINT moneda_anuncio_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'estado_anuncio_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.anuncio DROP CONSTRAINT estado_anuncio_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'anuncio_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT anuncio_alquiler_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'inquilino_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT inquilino_alquiler_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'importe_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT importe_alquiler_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'estado_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT estado_alquiler_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'alquiler_pago_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.pago_alquiler DROP CONSTRAINT alquiler_pago_alquiler_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'medio_pago_pago_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.pago_alquiler DROP CONSTRAINT medio_pago_pago_alquiler_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'moneda_pago_venta_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.pago_venta DROP CONSTRAINT moneda_pago_venta_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'medio_pago_pago_venta_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.pago_venta DROP CONSTRAINT medio_pago_pago_venta_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'anuncio_venta_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.venta DROP CONSTRAINT anuncio_venta_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'comprador_venta_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.venta DROP CONSTRAINT comprador_venta_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'moneda_venta_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.venta DROP CONSTRAINT moneda_venta_fk
 
 
 -----------------DROP PREVENTIVO DE TABLAS---------------------------
@@ -80,8 +164,17 @@ DROP TABLE LAS_CUATRO_CIFRAS.importe_alquiler
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'comprador')
 DROP TABLE LAS_CUATRO_CIFRAS.comprador
 
+IF EXISTS (SELECT name FROM sys.tables WHERE name = 'pago_venta')
+DROP TABLE LAS_CUATRO_CIFRAS.pago_venta
+
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'venta')
 DROP TABLE LAS_CUATRO_CIFRAS.venta
+GO
+
+
+-------------DROP PREVENTIVO DE SCHEMA----------------------------
+IF EXISTS (SELECT name FROM sys.schemas WHERE name = 'LAS_CUATRO_CIFRAS')
+DROP SCHEMA LAS_CUATRO_CIFRAS
 GO
 
 
@@ -301,8 +394,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.propietario
             PRIMARY KEY,
     nombre nvarchar(100) NOT NULL,
     apellido nvarchar(100) NOT NULL,
-    fecha_registro numeric(18, 0)
-        NOT NULL DEFAULT GETDATE(),
+    fecha_registro datetime DEFAULT GETDATE(),
     telefono numeric(18, 0) NOT NULL,
     mail nvarchar (255),
     fecha_nacimiento datetime NOT NULL,
@@ -592,6 +684,7 @@ ON LAS_CUATRO_CIFRAS.anuncio(id_anuncio,inmueble);
 
 CREATE INDEX anuncio_moneda_index
 ON LAS_CUATRO_CIFRAS.anuncio(id_anuncio,moneda);
+GO
 
 
 
