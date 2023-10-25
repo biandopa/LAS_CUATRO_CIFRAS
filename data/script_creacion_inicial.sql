@@ -72,6 +72,9 @@ ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT importe_alquiler_fk
 IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'estado_alquiler_fk')
 ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT estado_alquiler_fk
 
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'anuncio_alquiler_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.alquiler DROP CONSTRAINT anuncio_alquiler_fk
+
 IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'alquiler_pago_alquiler_fk')
 ALTER TABLE LAS_CUATRO_CIFRAS.pago_alquiler DROP CONSTRAINT alquiler_pago_alquiler_fk
 
@@ -92,6 +95,10 @@ ALTER TABLE LAS_CUATRO_CIFRAS.venta DROP CONSTRAINT comprador_venta_fk
 
 IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'moneda_venta_fk')
 ALTER TABLE LAS_CUATRO_CIFRAS.venta DROP CONSTRAINT moneda_venta_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'pago_venta_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.venta DROP CONSTRAINT pago_venta_fk
+GO
 
 
 -----------------DROP PREVENTIVO DE TABLAS---------------------------
@@ -335,16 +342,13 @@ CREATE TABLE LAS_CUATRO_CIFRAS.direccion
         IDENTITY(1,1)
         CONSTRAINT direccion_pk
             PRIMARY KEY,
-    provincia numeric(18,0)
-        NOT NULL
+    provincia numeric(18,0) NOT NULL
         CONSTRAINT provincia_direccion_fk
             REFERENCES LAS_CUATRO_CIFRAS.provincia,
-    localidad numeric(18,0)
-        NOT NULL
+    localidad numeric(18,0) NOT NULL
         CONSTRAINT localidad_direccion_fk
             REFERENCES LAS_CUATRO_CIFRAS.localidad,
-    barrio numeric(18,0)
-        NOT NULL
+    barrio numeric(18,0) NOT NULL
         CONSTRAINT barrio_direccion_fk
             REFERENCES LAS_CUATRO_CIFRAS.barrio,
     calle nvarchar(100) NOT NULL,
@@ -415,31 +419,25 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inmueble
     id_inmueble numeric(18,0)
         CONSTRAINT inmueble_pk
             PRIMARY KEY,
-    tipo numeric(18,0)
-        NOT NULL
+    tipo numeric(18,0) NOT NULL
         CONSTRAINT tipo_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.tipo_inmueble,
     descripcion nvarchar(100) NOT NULL,
-    id_propietario numeric(18,0)
-        NOT NULL
+    id_propietario numeric(18,0) NOT NULL
         CONSTRAINT propietario_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.propietario,
-    id_direccion numeric(18,0)
-        NOT NULL
+    id_direccion numeric(18,0) NOT NULL
         CONSTRAINT direccion_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.direccion,
     ambientes nvarchar(100) NOT NULL,
     superficie_total numeric(18,2) NOT NULL,
-    disposicion numeric(18,0)
-        NOT NULL
+    disposicion numeric(18,0) NOT NULL
         CONSTRAINT disposicion_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.disposicion_inmueble,
-    orientacion numeric(18,0)
-        NOT NULL
+    orientacion numeric(18,0) NOT NULL
         CONSTRAINT orientacion_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.orientacion_inmueble,
-    estado numeric(18,0)
-        NOT NULL
+    estado numeric(18,0) NOT NULL
         CONSTRAINT estado_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.estado_inmueble,
     antiguedad numeric(18,0),
@@ -448,12 +446,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inmueble
 
 CREATE TABLE LAS_CUATRO_CIFRAS.inmueble_caracteristica
 (
-    id_inmueble numeric(18,0)
-        NOT NULL
+    id_inmueble numeric(18,0) NOT NULL
         CONSTRAINT inmueble_caracteristica_fk
            REFERENCES LAS_CUATRO_CIFRAS.inmueble,
-    id_caracteristica numeric(18,0)
-        NOT NULL
+    id_caracteristica numeric(18,0) NOT NULL
         CONSTRAINT caracteristica_fk
             REFERENCES LAS_CUATRO_CIFRAS.caracteristica
 )
@@ -464,8 +460,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.sucursal
          CONSTRAINT sucursal_pk
             PRIMARY KEY,
     nombre nvarchar(100) NOT NULL,
-    direccion numeric(18,0)
-        NOT NULL
+    direccion numeric(18,0) NOT NULL
         CONSTRAINT direccion_sucursal_fk
             REFERENCES LAS_CUATRO_CIFRAS.direccion,
     telefono numeric(18,0),
@@ -483,8 +478,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.agente
     telefono numeric(18,0) NOT NULL,
     mail nvarchar(100),
     fecha_nacimiento datetime NOT NULL,
-    sucursal numeric(18,0)
-        NOT NULL
+    sucursal numeric(18,0) NOT NULL
         CONSTRAINT sucursal_agente_fk
             REFERENCES LAS_CUATRO_CIFRAS.sucursal
 )
@@ -504,26 +498,21 @@ CREATE TABLE LAS_CUATRO_CIFRAS.anuncio
             PRIMARY KEY,
     fecha_publicacion datetime
         DEFAULT GETDATE(),
-    agente numeric(18,0)
-        NOT NULL
+    agente numeric(18,0) NOT NULL
         CONSTRAINT agente_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.agente,
-    tipo_operacion numeric(18,0)
-        NOT NULL
+    tipo_operacion numeric(18,0) NOT NULL
         CONSTRAINT tipo_operacion_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.tipo_operacion,
-    inmueble numeric(18,0)
-        NOT NULL
+    inmueble numeric(18,0) NOT NULL
         CONSTRAINT inmueble_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.inmueble,
     precio_inmueble numeric(18,2) NOT NULL,
-    moneda numeric(18,0)
-        NOT NULL
+    moneda numeric(18,0) NOT NULL
         CONSTRAINT moneda_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.moneda,
     tipo_periodo nvarchar(100) NOT NULL,
-    estado numeric(18,0)
-        NOT NULL
+    estado numeric(18,0) NOT NULL
         CONSTRAINT estado_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.estado_inmueble,
     fecha_finalizacion datetime NOT NULL,
@@ -549,10 +538,6 @@ CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
 	    IDENTITY(1,1)
 		CONSTRAINT importe_alquiler_pk
 			PRIMARY KEY,
-    id_alquiler numeric(18,0)
-        NOT NULL
-        CONSTRAINT alquiler_importe_alquiler_fk
-            REFERENCES LAS_CUATRO_CIFRAS.alquiler,
 	periodo_inicio numeric(18,0) NOT NULL,
 	periodo_fin numeric(18,0) NOT NULL,
 	precio numeric(18,2) NOT NULL,
@@ -567,8 +552,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
 	    NOT NULL
 		CONSTRAINT anuncio_alquiler_fk
 			REFERENCES LAS_CUATRO_CIFRAS.anuncio,
-	id_inquilino numeric(18,0)
-        NOT NULL
+	id_inquilino numeric(18,0) NOT NULL
 		CONSTRAINT inquilino_alquiler_fk
 			REFERENCES LAS_CUATRO_CIFRAS.inquilino,
     fecha_fin datetime NOT NULL,
@@ -581,8 +565,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
 	deposito numeric(18,2) NOT NULL,
 	comision numeric(18,2) NOT NULL,
 	gasto_averig numeric(18,2) NOT NULL,
-    estado numeric(18,0)
-        NOT NULL
+    estado numeric(18,0) NOT NULL
         CONSTRAINT estado_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.estado_inmueble,
     CONSTRAINT CHK_Alquiler_Date CHECK (fecha_fin > fecha_inicio)
@@ -601,7 +584,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.pago_alquiler(
 		CONSTRAINT pago_alquiler_pk
 		    PRIMARY KEY,
 	id_alquiler numeric(18,0)
-	            NOT NULL
+	 NOT NULL
 		CONSTRAINT alquiler_pago_alquiler_fk
 			REFERENCES LAS_CUATRO_CIFRAS.alquiler,
 	medio_pago numeric(18,0)
@@ -636,13 +619,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.pago_venta(
         CONSTRAINT pago_venta_pk
             PRIMARY KEY,
     importe numeric(18,2) NOT NULL,
-    id_moneda numeric(18,0)
-        NOT NULL
+    id_moneda numeric(18,0) NOT NULL
         CONSTRAINT moneda_pago_venta_fk
             REFERENCES LAS_CUATRO_CIFRAS.moneda,
     cotizacion numeric(18,2) NOT NULL,
-    medio_pago numeric(18,0)
-        NOT NULL
+    medio_pago numeric(18,0) NOT NULL
         CONSTRAINT medio_pago_pago_venta_fk
             REFERENCES LAS_CUATRO_CIFRAS.medio_pago
 )
@@ -882,8 +863,8 @@ BEGIN
              INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion
              INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
              INNER JOIN LAS_CUATRO_CIFRAS.direccion d
-                        ON m.INMUEBLE_DIRECCION = d.calle AND m.INMUEBLE_BARRIO = b.descripcion AND
-                           m.INMUEBLE_LOCALIDAD = l.descripcion AND m.INMUEBLE_PROVINCIA = pr.descripcion
+                        ON m.INMUEBLE_DIRECCION = d.calle AND d.barrio = b.id_barrio AND
+                           d.localidad = l.id_localidad AND d.provincia = pr.id_provincia
              INNER JOIN LAS_CUATRO_CIFRAS.disposicion_inmueble di ON m.INMUEBLE_DISPOSICION = di.descripcion
              INNER JOIN LAS_CUATRO_CIFRAS.orientacion_inmueble o ON m.INMUEBLE_ORIENTACION = o.descripcion
              INNER JOIN LAS_CUATRO_CIFRAS.estado_inmueble e ON m.INMUEBLE_ESTADO = e.descripcion
@@ -973,14 +954,16 @@ GO
 CREATE PROCEDURE importe_alquiler_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.importe_alquiler(id_alquiler, periodo_inicio,periodo_fin,precio)
-    SELECT DISTINCT ALQUILER_CODIGO, DETALLE_ALQ_NRO_PERIODO_INI, DETALLE_ALQ_NRO_PERIODO_FIN, DETALLE_ALQ_PRECIO
-    FROM gd_esquema.Maestra
-    INNER JOIN LAS_CUATRO_CIFRAS.alquiler a ON a.id_alquiler = ALQUILER_CODIGO
-    WHERE ALQUILER_CODIGO IS NOT NULL
-      AND DETALLE_ALQ_NRO_PERIODO_INI IS NOT NULL
-      AND DETALLE_ALQ_NRO_PERIODO_FIN IS NOT NULL
-      AND DETALLE_ALQ_PRECIO IS NOT NULL
+    INSERT INTO LAS_CUATRO_CIFRAS.importe_alquiler(periodo_inicio,periodo_fin,precio)
+    SELECT DETALLE_ALQ_NRO_PERIODO_INI, DETALLE_ALQ_NRO_PERIODO_FIN, DETALLE_ALQ_PRECIO
+    FROM (
+            SELECT DISTINCT ALQUILER_CODIGO, DETALLE_ALQ_NRO_PERIODO_INI, DETALLE_ALQ_NRO_PERIODO_FIN, DETALLE_ALQ_PRECIO
+            FROM gd_esquema.Maestra
+            WHERE ALQUILER_CODIGO IS NOT NULL
+                AND DETALLE_ALQ_NRO_PERIODO_INI IS NOT NULL
+                AND DETALLE_ALQ_NRO_PERIODO_FIN IS NOT NULL
+                AND DETALLE_ALQ_PRECIO IS NOT NULL
+         ) AS m
 END
 GO
 
@@ -989,12 +972,15 @@ CREATE PROCEDURE alquiler_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.alquiler(id_alquiler,fecha_inicio,fecha_fin,id_inquilino,id_anuncio,duracion,importe,deposito,comision,gasto_averig,estado)
-    SELECT DISTINCT ALQUILER_CODIGO, ALQUILER_FECHA_INICIO, ALQUILER_FECHA_FIN, INQUILINO_DNI, ANUNCIO_CODIGO, ALQUILER_CANT_PERIODOS, i.id_importe,
-                    ALQUILER_DEPOSITO, ALQUILER_COMISION, ALQUILER_GASTOS_AVERIGUA, ALQUILER_ESTADO
+    SELECT DISTINCT ALQUILER_CODIGO, ALQUILER_FECHA_INICIO, ALQUILER_FECHA_FIN, inq.dni, a.id_anuncio, ALQUILER_CANT_PERIODOS, i.id_importe,
+                    ALQUILER_DEPOSITO, ALQUILER_COMISION, ALQUILER_GASTOS_AVERIGUA, e.id_estado
     FROM gd_esquema.Maestra
     INNER JOIN LAS_CUATRO_CIFRAS.importe_alquiler i ON DETALLE_ALQ_NRO_PERIODO_INI = i.periodo_inicio
                                                            AND DETALLE_ALQ_NRO_PERIODO_FIN = i.periodo_fin
                                                            AND DETALLE_ALQ_PRECIO = i.precio
+    INNER JOIN LAS_CUATRO_CIFRAS.inquilino inq ON inq.dni = INQUILINO_DNI
+    INNER JOIN LAS_CUATRO_CIFRAS.anuncio a ON a.id_anuncio = ANUNCIO_CODIGO
+    INNER JOIN LAS_CUATRO_CIFRAS.estado_inmueble e ON e.descripcion = ALQUILER_ESTADO
     WHERE ALQUILER_CODIGO IS NOT NULL
 END
 GO
@@ -1100,40 +1086,44 @@ BEGIN CATCH
 	THROW 50001, N'Error al migrar las tablas, verifique que éstas tablas se encuentren vacías o bien ejecute un DROP de todas las nuevas tablas y vuelva a intentarlo.',1;
 END CATCH
 
-   IF (EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.tipo_operacion)
-   AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.provincia)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.localidad)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.barrio)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.direccion)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.tipo_inmueble)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.disposicion_inmueble)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.estado_inmueble)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.orientacion_inmueble)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.caracteristica)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.propietario)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.inmueble)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.inmueble_caracteristica)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.sucursal)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.agente)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.moneda)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.anuncio)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.inquilino)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.importe_alquiler)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.alquiler)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.medio_pago)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.pago_alquiler)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.comprador)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.pago_venta)
-    AND EXISTS (SELECT 1 FROM LAS_CUATRO_CIFRAS.venta))
+BEGIN
+DECLARE @table_name nvarchar(128)
+DECLARE @count int
+DECLARE @error_message nvarchar(255)
+DECLARE @sql nvarchar(max)
 
-   BEGIN
-	PRINT N'Tablas migradas correctamente.';
-	COMMIT TRANSACTION;
-   END
-	 ELSE
-   BEGIN
-    ROLLBACK TRANSACTION;
-	THROW 50002, N'Error al migrar una o más tablas. Todos los cambios fueron revertidos y ninguna tabla del schema LAS_CUATRO_CIFRAS fue cargada en la base.',1;
-   END
+DECLARE table_cursor CURSOR FOR
+SELECT name
+FROM sys.tables
+WHERE name IN ('tipo_operacion', 'provincia', 'localidad', 'barrio', 'direccion', 'tipo_inmueble', 'disposicion_inmueble',
+               'estado_inmueble', 'orientacion_inmueble', 'caracteristica', 'propietario', 'inmueble', 'inmueble_caracteristica',
+               'sucursal', 'agente', 'moneda', 'anuncio', 'inquilino', 'importe_alquiler', 'alquiler', 'medio_pago', 'pago_alquiler',
+               'comprador', 'pago_venta', 'venta')
 
+OPEN table_cursor
+
+FETCH NEXT FROM table_cursor INTO @table_name
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @sql = N'SELECT @count = COUNT(*) FROM LAS_CUATRO_CIFRAS.' + QUOTENAME(@table_name)
+    EXEC sp_executesql @sql, N'@count int OUTPUT', @count=@count OUTPUT
+
+    IF @count = 0
+    BEGIN
+        SET @error_message =
+                N'Error al migrar una o más tablas. Todos los cambios fueron revertidos y ninguna tabla del schema LAS_CUATRO_CIFRAS fue cargada en la base.'
+        ROLLBACK TRANSACTION;
+        THROW 50002, @error_message,1;
+    END
+
+    FETCH NEXT FROM table_cursor INTO @table_name
+END
+
+CLOSE table_cursor
+DEALLOCATE table_cursor
+
+PRINT N'Tablas migradas correctamente.'
+COMMIT TRANSACTION
+END
 GO
