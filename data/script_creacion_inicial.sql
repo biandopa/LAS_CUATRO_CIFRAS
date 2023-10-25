@@ -304,7 +304,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.tipo_operacion
         IDENTITY(1,1)
         CONSTRAINT tipo_operacion_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.provincia
@@ -313,7 +313,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.provincia
         IDENTITY(1,1)
         CONSTRAINT provincia_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 
 )
 
@@ -362,7 +362,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.tipo_inmueble
         IDENTITY(1,1)
         CONSTRAINT tipo_inmueble_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 
 )
 
@@ -372,7 +372,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.disposicion_inmueble
         IDENTITY(1,1)
         CONSTRAINT disposicion_inmueble_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.estado_inmueble
@@ -381,7 +381,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.estado_inmueble
         IDENTITY(1,1)
         CONSTRAINT estado_inmueble_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.orientacion_inmueble
@@ -390,7 +390,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.orientacion_inmueble
         IDENTITY(1,1)
         CONSTRAINT orientacion_inmueble_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.caracteristica
@@ -399,7 +399,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.caracteristica
         IDENTITY(1,1)
         CONSTRAINT caracteristica_pk
             PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.propietario
@@ -489,7 +489,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.moneda(
 	    IDENTITY(1,1)
         CONSTRAINT moneda_pk
             PRIMARY KEY,
-	descripcion nvarchar(100) NOT NULL
+	descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.anuncio
@@ -577,7 +577,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.medio_pago(
 	    IDENTITY(1,1)
         CONSTRAINT medio_pago_pk
             PRIMARY KEY,
-	descripcion nvarchar(100) NOT NULL
+	descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.pago_alquiler(
@@ -658,34 +658,40 @@ GO
 ----------------CREACIÓN DE INDICES-------------------
 
 CREATE INDEX direc_provincia_index
-ON LAS_CUATRO_CIFRAS.direccion(id_direccion,provincia);
+ON LAS_CUATRO_CIFRAS.direccion(provincia);
 
 CREATE INDEX direc_localidad_index
-ON LAS_CUATRO_CIFRAS.direccion(id_direccion,localidad);
+ON LAS_CUATRO_CIFRAS.direccion(localidad);
 
 CREATE INDEX direc_barrio_index
-ON LAS_CUATRO_CIFRAS.direccion(id_direccion,barrio);
-
-CREATE INDEX inmueble_tipo_index
-ON LAS_CUATRO_CIFRAS.inmueble(id_inmueble,tipo);
+ON LAS_CUATRO_CIFRAS.direccion(barrio);
 
 CREATE INDEX inmueble_propietario_index
-ON LAS_CUATRO_CIFRAS.inmueble(id_inmueble,id_propietario);
+ON LAS_CUATRO_CIFRAS.inmueble(id_propietario);
 
 CREATE INDEX inmueble_direccion_index
-ON LAS_CUATRO_CIFRAS.inmueble(id_inmueble,id_direccion);
+ON LAS_CUATRO_CIFRAS.inmueble(id_direccion);
+
+CREATE INDEX inmueble_caracteristica_id_index
+ON LAS_CUATRO_CIFRAS.inmueble_caracteristica(id_inmueble);
+
+CREATE INDEX sucursal_direccion_index
+ON LAS_CUATRO_CIFRAS.sucursal(direccion);
+
+CREATE UNIQUE INDEX caracteristica_descripcion_index
+ON LAS_CUATRO_CIFRAS.caracteristica(descripcion);
 
 CREATE INDEX anuncio_agente_index
-ON LAS_CUATRO_CIFRAS.anuncio(id_anuncio,agente);
+ON LAS_CUATRO_CIFRAS.anuncio(agente);
 
 CREATE INDEX anuncio_tipo_operacion_index
-ON LAS_CUATRO_CIFRAS.anuncio(id_anuncio,tipo_operacion);
+ON LAS_CUATRO_CIFRAS.anuncio(tipo_operacion);
 
 CREATE INDEX anuncio_inmueble_index
-ON LAS_CUATRO_CIFRAS.anuncio(id_anuncio,inmueble);
+ON LAS_CUATRO_CIFRAS.anuncio(inmueble);
 
 CREATE INDEX anuncio_moneda_index
-ON LAS_CUATRO_CIFRAS.anuncio(id_anuncio,moneda);
+ON LAS_CUATRO_CIFRAS.anuncio(moneda);
 GO
 
 
@@ -1086,6 +1092,7 @@ BEGIN CATCH
     ROLLBACK TRANSACTION;
 	THROW 50001, N'Error al migrar las tablas, verifique que éstas tablas se encuentren vacías o bien ejecute un DROP de todas las nuevas tablas y vuelva a intentarlo.',1;
 END CATCH
+
 
 BEGIN
 DECLARE @table_name nvarchar(128)
