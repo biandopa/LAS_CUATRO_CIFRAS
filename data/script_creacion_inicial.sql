@@ -187,103 +187,103 @@ GO
 
 -------------DROP PREVENTIVO DE STORED PROCEDURES---------------------
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'tipo_operacion_migration')
-DROP PROCEDURE tipo_operacion_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.tipo_operacion_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'provincia_migration')
-DROP PROCEDURE provincia_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.provincia_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'localidad_migration')
-DROP PROCEDURE localidad_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.localidad_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'barrio_migration')
-DROP PROCEDURE barrio_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.barrio_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'direccion_migration')
-DROP PROCEDURE direccion_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.direccion_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'tipo_inmueble_migration')
-DROP PROCEDURE tipo_inmueble_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.tipo_inmueble_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'disposicion_inmueble_migration')
-DROP PROCEDURE disposicion_inmueble_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.disposicion_inmueble_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'estado_inmueble_migration')
-DROP PROCEDURE estado_inmueble_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.estado_inmueble_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'orientacion_inmueble_migration')
-DROP PROCEDURE orientacion_inmueble_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.orientacion_inmueble_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'caracteristica_migration')
-DROP PROCEDURE caracteristica_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.caracteristica_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'propietario_migration')
-DROP PROCEDURE propietario_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.propietario_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'inmueble_migration')
-DROP PROCEDURE inmueble_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.inmueble_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'inmueble_caracteristica_migration')
-DROP PROCEDURE inmueble_caracteristica_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.inmueble_caracteristica_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'sucursal_migration')
-DROP PROCEDURE sucursal_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.sucursal_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'agente_migration')
-DROP PROCEDURE agente_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.agente_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'moneda_migration')
-DROP PROCEDURE moneda_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.moneda_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'anuncio_migration')
-DROP PROCEDURE anuncio_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.anuncio_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'inquilino_migration')
-DROP PROCEDURE inquilino_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.inquilino_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'importe_alquiler_migration')
-DROP PROCEDURE importe_alquiler_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.importe_alquiler_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'alquiler_migration')
-DROP PROCEDURE alquiler_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.alquiler_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'medio_pago_migration')
-DROP PROCEDURE medio_pago_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.medio_pago_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'pago_alquiler_migration')
-DROP PROCEDURE pago_alquiler_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.pago_alquiler_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'comprador_migration')
-DROP PROCEDURE comprador_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.comprador_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'pago_venta_migration')
-DROP PROCEDURE pago_venta_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.pago_venta_migration
 GO
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'venta_migration')
-DROP PROCEDURE venta_migration
+DROP PROCEDURE LAS_CUATRO_CIFRAS.venta_migration
 GO
 
 
@@ -295,6 +295,7 @@ GO
 ------------CREACIÓN DE SCHEMA---------------------------
 CREATE SCHEMA [LAS_CUATRO_CIFRAS]
 GO
+
 
 -----------CREACIÓN DE TABLAS-------------------
 CREATE TABLE LAS_CUATRO_CIFRAS.tipo_operacion
@@ -703,7 +704,7 @@ END*/
 
 
 -----------CREACIÓN DE STORED PROCEDURES PARA LA MIGRACIÓN------------------
-CREATE PROCEDURE tipo_operacion_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.tipo_operacion_migration
  AS
   BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.tipo_operacion(descripcion)
@@ -713,7 +714,7 @@ CREATE PROCEDURE tipo_operacion_migration
   END
 GO
 
-CREATE PROCEDURE provincia_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.provincia_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.provincia(descripcion)
@@ -727,7 +728,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE localidad_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.localidad_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.localidad(descripcion)
@@ -741,7 +742,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE barrio_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.barrio_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.barrio(descripcion)
@@ -751,7 +752,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE direccion_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.direccion_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.direccion(calle,provincia,localidad,barrio)
@@ -764,7 +765,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE tipo_inmueble_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.tipo_inmueble_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.tipo_inmueble(descripcion)
@@ -774,7 +775,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE disposicion_inmueble_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.disposicion_inmueble_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.disposicion_inmueble(descripcion)
@@ -784,7 +785,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE estado_inmueble_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.estado_inmueble_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.estado_inmueble(descripcion)
@@ -794,7 +795,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE orientacion_inmueble_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.orientacion_inmueble_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.orientacion_inmueble(descripcion)
@@ -804,7 +805,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE caracteristica_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.caracteristica_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.caracteristica(descripcion)
@@ -812,7 +813,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE propietario_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.propietario_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.propietario(dni,nombre,apellido,fecha_registro,telefono,mail,fecha_nacimiento)
@@ -822,7 +823,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE inmueble_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.inmueble_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.inmueble(id_inmueble, tipo, descripcion, id_propietario, id_direccion, ambientes,
@@ -872,7 +873,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE inmueble_caracteristica_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.inmueble_caracteristica_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.inmueble_caracteristica(id_inmueble,id_caracteristica)
@@ -886,7 +887,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE sucursal_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.sucursal_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.sucursal(id_sucursal,nombre,direccion,telefono)
@@ -901,7 +902,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE agente_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.agente_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.agente(dni,nombre,apellido,fecha_nacimiento,fecha_registro,telefono,mail,sucursal)
@@ -912,7 +913,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE moneda_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.moneda_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.moneda(descripcion)
@@ -922,7 +923,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE anuncio_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.anuncio_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.anuncio(id_anuncio,fecha_publicacion,agente,tipo_operacion,inmueble,precio_inmueble,moneda,tipo_periodo,estado,fecha_finalizacion,costo_publicacion)
@@ -935,7 +936,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE inquilino_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.inquilino_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.inquilino(dni,nombre,apellido,fecha_registro,telefono,mail,fecha_nac)
@@ -951,7 +952,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE importe_alquiler_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.importe_alquiler_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.importe_alquiler(periodo_inicio,periodo_fin,precio)
@@ -968,7 +969,7 @@ END
 GO
 
 
-CREATE PROCEDURE alquiler_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.alquiler_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.alquiler(id_alquiler,fecha_inicio,fecha_fin,id_inquilino,id_anuncio,duracion,importe,deposito,comision,gasto_averig,estado)
@@ -985,7 +986,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE medio_pago_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.medio_pago_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.medio_pago(descripcion)
@@ -999,7 +1000,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE pago_alquiler_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.pago_alquiler_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.pago_alquiler(id_pago_alquiler,fecha_pago,importe,id_alquiler, medio_pago,num_periodo,descripcion,fecha_inicio,fecha_fin)
@@ -1013,7 +1014,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE comprador_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.comprador_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.comprador(dni,nombre,apellido,fecha_registro,telefono,mail,fecha_nacimiento)
@@ -1023,7 +1024,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE pago_venta_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.pago_venta_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.pago_venta(importe,id_moneda,cotizacion,medio_pago)
@@ -1035,7 +1036,7 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE venta_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.venta_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.venta(id_venta,id_anuncio,id_comprador,fecha_venta,precio_venta,id_moneda,pago,comision_inmob)
@@ -1055,31 +1056,31 @@ GO
 
 BEGIN TRANSACTION
 BEGIN TRY
-    EXECUTE tipo_operacion_migration
-    EXECUTE provincia_migration
-    EXECUTE localidad_migration
-    EXECUTE barrio_migration
-    EXECUTE direccion_migration
-    EXECUTE tipo_inmueble_migration
-    EXECUTE disposicion_inmueble_migration
-    EXECUTE estado_inmueble_migration
-    EXECUTE orientacion_inmueble_migration
-    EXECUTE caracteristica_migration
-    EXECUTE propietario_migration
-    EXECUTE inmueble_migration
-    EXECUTE inmueble_caracteristica_migration
-    EXECUTE sucursal_migration
-    EXECUTE agente_migration
-    EXECUTE moneda_migration
-    EXECUTE anuncio_migration
-    EXECUTE inquilino_migration
-    EXECUTE importe_alquiler_migration
-    EXECUTE alquiler_migration
-    EXECUTE medio_pago_migration
-    EXECUTE pago_alquiler_migration
-    EXECUTE comprador_migration
-    EXECUTE pago_venta_migration
-    EXECUTE venta_migration
+    EXECUTE LAS_CUATRO_CIFRAS.tipo_operacion_migration
+    EXECUTE LAS_CUATRO_CIFRAS.provincia_migration
+    EXECUTE LAS_CUATRO_CIFRAS.localidad_migration
+    EXECUTE LAS_CUATRO_CIFRAS.barrio_migration
+    EXECUTE LAS_CUATRO_CIFRAS.direccion_migration
+    EXECUTE LAS_CUATRO_CIFRAS.tipo_inmueble_migration
+    EXECUTE LAS_CUATRO_CIFRAS.disposicion_inmueble_migration
+    EXECUTE LAS_CUATRO_CIFRAS.estado_inmueble_migration
+    EXECUTE LAS_CUATRO_CIFRAS.orientacion_inmueble_migration
+    EXECUTE LAS_CUATRO_CIFRAS.caracteristica_migration
+    EXECUTE LAS_CUATRO_CIFRAS.propietario_migration
+    EXECUTE LAS_CUATRO_CIFRAS.inmueble_migration
+    EXECUTE LAS_CUATRO_CIFRAS.inmueble_caracteristica_migration
+    EXECUTE LAS_CUATRO_CIFRAS.sucursal_migration
+    EXECUTE LAS_CUATRO_CIFRAS.agente_migration
+    EXECUTE LAS_CUATRO_CIFRAS.moneda_migration
+    EXECUTE LAS_CUATRO_CIFRAS.anuncio_migration
+    EXECUTE LAS_CUATRO_CIFRAS.inquilino_migration
+    EXECUTE LAS_CUATRO_CIFRAS.importe_alquiler_migration
+    EXECUTE LAS_CUATRO_CIFRAS.alquiler_migration
+    EXECUTE LAS_CUATRO_CIFRAS.medio_pago_migration
+    EXECUTE LAS_CUATRO_CIFRAS.pago_alquiler_migration
+    EXECUTE LAS_CUATRO_CIFRAS.comprador_migration
+    EXECUTE LAS_CUATRO_CIFRAS.pago_venta_migration
+    EXECUTE LAS_CUATRO_CIFRAS.venta_migration
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION;
