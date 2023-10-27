@@ -195,108 +195,110 @@ GO
 -------------DROP PREVENTIVO DE STORED PROCEDURES---------------------
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'tipo_operacion_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.tipo_operacion_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'provincia_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.provincia_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'localidad_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.localidad_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'barrio_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.barrio_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'direccion_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.direccion_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'tipo_inmueble_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.tipo_inmueble_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'disposicion_inmueble_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.disposicion_inmueble_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'estado_inmueble_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.estado_inmueble_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'orientacion_inmueble_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.orientacion_inmueble_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'caracteristica_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.caracteristica_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'propietario_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.propietario_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'inmueble_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.inmueble_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'inmueble_caracteristica_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.inmueble_caracteristica_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'sucursal_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.sucursal_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'agente_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.agente_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'moneda_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.moneda_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'estado_anuncio_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.estado_anuncio_migration
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'anuncio_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.anuncio_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'inquilino_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.inquilino_migration
-GO
 
-IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'importe_migration')
-DROP PROCEDURE LAS_CUATRO_CIFRAS.importe_migration
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'importe_alquiler_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.importe_alquiler_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'estado_alquiler_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.estado_alquiler_migration
 
+
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'alquiler_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.alquiler_migration
-GO
+
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'importe_migration')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.importe_migration
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'medio_pago_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.medio_pago_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'pago_alquiler_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.pago_alquiler_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'comprador_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.comprador_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'pago_venta_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.pago_venta_migration
-GO
+
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'venta_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.venta_migration
@@ -554,15 +556,6 @@ CREATE TABLE LAS_CUATRO_CIFRAS.importe(
     CONSTRAINT CHK_Importe_Alquiler_Date CHECK (periodo_fin > periodo_inicio)
 )
 
-CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
-	id_importe numeric(18,0)
-	    CONSTRAINT importe_alquiler_fk
-            REFERENCES LAS_CUATRO_CIFRAS.importe,
-	id_alquiler numeric(18,0) NOT NULL
-        CONSTRAINT alquiler_importe_alquiler_fk
-            REFERENCES LAS_CUATRO_CIFRAS.alquiler,
-)
-
 CREATE TABLE LAS_CUATRO_CIFRAS.estado_alquiler(
     id_estado numeric(18,0)
         IDENTITY(1,1)
@@ -592,6 +585,15 @@ CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
         CONSTRAINT estado_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.estado_alquiler,
     CONSTRAINT CHK_Alquiler_Date CHECK (fecha_fin > fecha_inicio)
+)
+
+CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
+	id_importe numeric(18,0)
+	    CONSTRAINT importe_alquiler_fk
+            REFERENCES LAS_CUATRO_CIFRAS.importe,
+	id_alquiler numeric(18,0) NOT NULL
+        CONSTRAINT alquiler_importe_alquiler_fk
+            REFERENCES LAS_CUATRO_CIFRAS.alquiler,
 )
 
 CREATE TABLE LAS_CUATRO_CIFRAS.medio_pago(
@@ -714,17 +716,6 @@ ON LAS_CUATRO_CIFRAS.venta(id_anuncio);
 GO
 
 
-----------------CREACIÓN DE TRIGGERS----------------------
-/*
-CREATE TRIGGER insertar_direccion
-ON LAS_CUATRO_CIFRAS.direccion
-INSTEAD OF INSERT
-AS
-BEGIN
-    INSERT INTO gd_esquema.Direccion (id_direccion, calle, numero, piso, departamento, provincia, localidad, barrio)
-    SELECT id_direccion, calle, numero, piso, departamento, provincia, localidad, barrio
-    FROM inserted
-END*/
 
 
 -----------CREACIÓN DE STORED PROCEDURES PARA LA MIGRACIÓN------------------
@@ -963,6 +954,7 @@ BEGIN
     FROM gd_esquema.Maestra
     WHERE ANUNCIO_ESTADO IS NOT NULL
 END
+GO
 
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.anuncio_migration
 AS
@@ -1123,7 +1115,7 @@ BEGIN
     FROM gd_esquema.Maestra
     INNER JOIN LAS_CUATRO_CIFRAS.moneda d ON VENTA_MONEDA = d.descripcion
     INNER JOIN LAS_CUATRO_CIFRAS.pago_venta p ON PAGO_VENTA_IMPORTE = p.importe AND PAGO_VENTA_COTIZACION = p.cotizacion AND p.id_moneda = d.id_moneda
-    INNER JOIN LAS_CUATRO_CIFRAS.medio_pago m ON PAGO_VENTA_MEDIO_PAGO = m.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.medio_pago m ON PAGO_VENTA_MEDIO_PAGO = m.descripcion AND m.id_medio_pago = p.medio_pago
     INNER JOIN LAS_CUATRO_CIFRAS.anuncio a ON a.id_anuncio = ANUNCIO_CODIGO
     INNER JOIN LAS_CUATRO_CIFRAS.comprador c ON c.dni = COMPRADOR_DNI
     WHERE VENTA_CODIGO IS NOT NULL
