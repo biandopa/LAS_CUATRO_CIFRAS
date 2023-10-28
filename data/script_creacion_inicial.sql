@@ -548,7 +548,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.agente
     apellido nvarchar(100) NOT NULL,
     fecha_registro datetime DEFAULT GETDATE(),
     telefono numeric(18,0) NOT NULL,
-    mail nvarchar(100),
+    mail nvarchar(100) NOT NULL,
     fecha_nacimiento datetime NOT NULL,
     sucursal numeric(18,0) NOT NULL
         CONSTRAINT sucursal_agente_fk
@@ -609,7 +609,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.anuncio
             REFERENCES LAS_CUATRO_CIFRAS.estado_anuncio,
     fecha_finalizacion datetime NOT NULL,
     costo_publicacion numeric(18,2) NOT NULL,
-    CONSTRAINT CHK_Date CHECK (fecha_finalizacion > fecha_publicacion)
+    CONSTRAINT CHK_Anuncio_Date CHECK (fecha_finalizacion > fecha_publicacion)
 )
 
 
@@ -686,7 +686,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
 )
 
 
-/* Se crea la tabla importe_alquiler para almacenar
+/* Se crea la tabla intermedia importe_alquiler para almacenar
    los importes de los alquileres pagados por el inquilino
    a la inmobiliaria*/
 CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
