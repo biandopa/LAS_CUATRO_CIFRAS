@@ -3,6 +3,7 @@ GO
 
 
 --------------------DROPS PREVENTIVOS ---------------------------
+/* PARA NO TENER ERRORES DE DEPENDECIAS NI DATOS DUPLICADOS */
 
 
 ---------------DROP PREVENTIVO DE FOREIGN KEYS---------------------
@@ -320,6 +321,11 @@ GO
 
 
 -----------CREACIÓN DE TABLAS-------------------
+
+/* Se crea la tabla tipo de operación para almacenar los
+   datos tipificados de la tabla anuncio haciendo alución
+   a si el anuncio corresponde a una venta, alquiler, alquiler
+   temporario, etc. */
 CREATE TABLE LAS_CUATRO_CIFRAS.tipo_operacion
 (
     id_tipo_operacion numeric(18,0) IDENTITY(1,1)
@@ -328,6 +334,9 @@ CREATE TABLE LAS_CUATRO_CIFRAS.tipo_operacion
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla provincia para identificar
+   a éstas por un id dentro de la tabla direccion*/
 CREATE TABLE LAS_CUATRO_CIFRAS.provincia
 (
     id_provincia numeric(18,0) IDENTITY(1,1)
@@ -336,6 +345,9 @@ CREATE TABLE LAS_CUATRO_CIFRAS.provincia
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla localidad para identificar
+   a éstas por un id dentro de la tabla direccion*/
 CREATE TABLE LAS_CUATRO_CIFRAS.localidad
 (
     id_localidad numeric(18,0) IDENTITY(1,1)
@@ -344,6 +356,9 @@ CREATE TABLE LAS_CUATRO_CIFRAS.localidad
     descripcion nvarchar(100) NOT NULL
 )
 
+
+/* Se crea la tabla barrio para identificar
+   a éstos por un id dentro de la tabla direccion*/
 CREATE TABLE LAS_CUATRO_CIFRAS.barrio
 (
     id_barrio numeric(18,0) IDENTITY(1,1)
@@ -352,6 +367,12 @@ CREATE TABLE LAS_CUATRO_CIFRAS.barrio
     descripcion nvarchar(100) NOT NULL
 )
 
+
+/* Se crea la tabla dirección para almacenar
+   y relacionar los datos de los ids de barrio,
+   localidad y provincia que están tipíficados
+   a un nombre de calle y poder utilizarlos en
+   las tablas inmueble y sucursal*/
 CREATE TABLE LAS_CUATRO_CIFRAS.direccion
 (
     id_direccion numeric(18,0) IDENTITY(1,1)
@@ -369,6 +390,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.direccion
     calle nvarchar(100) NOT NULL,
 )
 
+
+/* Se crea la tabla tipo de inmueble para almacenar
+   los datos tipificados de la tabla inmueble haciendo
+   alución a los tipos de inmuebles posibles de un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.tipo_inmueble
 (
     id_tipo numeric(18,0) IDENTITY(1,1)
@@ -377,6 +402,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.tipo_inmueble
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla disposicion de inmueble para almacenar
+   los datos tipificados de la tabla inmueble haciendo
+   alucion a la ubicación dentro del edificio del inmueble
+   en el caso que corresponda*/
 CREATE TABLE LAS_CUATRO_CIFRAS.disposicion_inmueble
 (
     id_disposicion numeric(18,0) IDENTITY(1,1)
@@ -385,6 +415,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.disposicion_inmueble
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla estado de inmueble para almacenar
+   los datos tipificados de la tabla inmueble haciendo
+   alucion a las condiciones en las que se encuentra el inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.estado_inmueble
 (
     id_estado numeric(18,0) IDENTITY(1,1)
@@ -393,6 +427,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.estado_inmueble
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla orientación de inmueble para almacenar
+   los datos tipificados de la tabla inmueble haciendo
+   alucion a la posición del inmueble con respecto a los
+   puntos cardinales*/
 CREATE TABLE LAS_CUATRO_CIFRAS.orientacion_inmueble
 (
     id_orientacion numeric(18,0) IDENTITY(1,1)
@@ -401,6 +440,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.orientacion_inmueble
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla característica para almacenar
+   los datos tipificados de la tabla inmueble haciendo
+   alución a las carácterísticas que puede tener un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.caracteristica
 (
     id_caracteristica numeric(18,0) IDENTITY(1,1)
@@ -409,11 +452,15 @@ CREATE TABLE LAS_CUATRO_CIFRAS.caracteristica
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla propiertario para almacenar los datos
+   de las personas que poseen un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.propietario
 (
-    dni numeric(18, 0)
+    id numeric(18, 0) IDENTITY(1,1)
         CONSTRAINT dni_propietario_pk
             PRIMARY KEY,
+    dni numeric(18, 0) NOT NULL,
     nombre nvarchar(100) NOT NULL,
     apellido nvarchar(100) NOT NULL,
     fecha_registro datetime DEFAULT GETDATE(),
@@ -422,6 +469,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.propietario
     fecha_nacimiento datetime NOT NULL,
 )
 
+
+/* Se crea la tabla inmueble para almacenar los datos
+   de los inmuebles que se encuentran en la inmobiliaria.
+   Posee relaciones a las tablas anteriores*/
 CREATE TABLE LAS_CUATRO_CIFRAS.inmueble
 (
     id_inmueble numeric(18,0)
@@ -452,6 +503,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inmueble
     expensas numeric(18,2) NOT NULL,
 )
 
+
+/* Se crea la tabla intermedia inmueble_caracteristica para almacenar
+   las relaciones entre la tabla inmueble y la tabla característica
+   haciendo alución a las combinaciones de características que puede
+   tener un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.inmueble_caracteristica
 (
     id_inmueble numeric(18,0) NOT NULL
@@ -462,6 +518,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inmueble_caracteristica
             REFERENCES LAS_CUATRO_CIFRAS.caracteristica
 )
 
+
+/* Se crea la tabla sucursal para almacenar los datos
+   de las sucursales a las que pertenecen los agentes
+   inmobiliarios asociados a un anuncio*/
 CREATE TABLE LAS_CUATRO_CIFRAS.sucursal
 (
      id_sucursal numeric(18,0)
@@ -474,11 +534,16 @@ CREATE TABLE LAS_CUATRO_CIFRAS.sucursal
     telefono numeric(18,0),
 )
 
+
+/* Se crea la tabla agente para almacenar los datos
+   de los agentes inmobiliarios que se encuentran
+   asociados a un anuncio*/
 CREATE TABLE LAS_CUATRO_CIFRAS.agente
 (
-    dni numeric(18,0)
+    id numeric(18,0) IDENTITY(1,1)
         CONSTRAINT dni_agente_pk
             PRIMARY KEY,
+    dni numeric(18,0) NOT NULL,
     nombre nvarchar(100) NOT NULL,
     apellido nvarchar(100) NOT NULL,
     fecha_registro datetime DEFAULT GETDATE(),
@@ -490,6 +555,12 @@ CREATE TABLE LAS_CUATRO_CIFRAS.agente
             REFERENCES LAS_CUATRO_CIFRAS.sucursal
 )
 
+
+/* Se crea la tabla tipo de operación para almacenar
+   los datos tipificados de las tablas anuncio, pago de
+   venta y venta, haciendo alución a las posibles monedas
+   con las que se puede realizar una transacción
+   en la inmobiliaria*/
 CREATE TABLE LAS_CUATRO_CIFRAS.moneda(
 	id_moneda numeric(18,0) IDENTITY(1,1)
         CONSTRAINT moneda_pk
@@ -497,6 +568,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.moneda(
 	descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla estado del anuncio para almacenar
+   los datos tipificados de la tabla anuncio, haciendo
+   alución a si el anuncio está Activo, Finalizado,
+   Cancelado, etc*/
 CREATE TABLE LAS_CUATRO_CIFRAS.estado_anuncio(
 	id_estado numeric(18,0) IDENTITY(1,1)
         CONSTRAINT estado_anuncio_pk
@@ -504,6 +580,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.estado_anuncio(
 	descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla anuncio para almacenar
+   los anuncios de cada una de las sucursales del grupo
+    inmobiliario, tanto para la venta como para el alquiler*/
 CREATE TABLE LAS_CUATRO_CIFRAS.anuncio
 (
     id_anuncio numeric(18,0)
@@ -533,10 +613,13 @@ CREATE TABLE LAS_CUATRO_CIFRAS.anuncio
 )
 
 
+/* Se crea la tabla inquilino para almacenar
+   a las personas que alquilan un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.inquilino(
-	dni numeric(18,0)
+	id numeric(18,0) IDENTITY(1,1)
 		CONSTRAINT dni_inquilino_pk
 		    PRIMARY KEY,
+    dni numeric(18,0) NOT NULL,
 	nombre nvarchar(100) NOT NULL,
 	apellido nvarchar(100) NOT NULL,
 	fecha_registro datetime DEFAULT GETDATE(),
@@ -545,6 +628,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inquilino(
 	fecha_nac datetime NOT NULL,
 )
 
+
+/* Se crea la tabla importe para almacenar
+   las variaciones que hay del importe de
+   un alquiler. Se especifica el importe
+   comprendido dentro de cada rango de periodos*/
 CREATE TABLE LAS_CUATRO_CIFRAS.importe(
 	id_importe numeric(18,0)
 	    IDENTITY(1,1)
@@ -556,6 +644,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.importe(
     CONSTRAINT CHK_Importe_Alquiler_Date CHECK (periodo_fin > periodo_inicio)
 )
 
+
+/* Se crea la tabla estado del alquiler para almacenar
+   los datos tipificados de la tabla alquiler, haciendo
+   alución al estado en que se encuentra en alquiler:
+   vigente, finalizado, cancelado, rescindido, etc*/
 CREATE TABLE LAS_CUATRO_CIFRAS.estado_alquiler(
     id_estado numeric(18,0)
         IDENTITY(1,1)
@@ -564,6 +657,11 @@ CREATE TABLE LAS_CUATRO_CIFRAS.estado_alquiler(
     descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla alquiler para almacenar
+   los datos de los alquileres que se concretan
+   y de los que están en curso, junto con los pagos
+   de los inquilinos*/
 CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
 	id_alquiler numeric(18,0)
 		CONSTRAINT alquiler_pk
@@ -587,6 +685,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
     CONSTRAINT CHK_Alquiler_Date CHECK (fecha_fin > fecha_inicio)
 )
 
+
+/* Se crea la tabla importe_alquiler para almacenar
+   los importes de los alquileres pagados por el inquilino
+   a la inmobiliaria*/
 CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
 	id_importe numeric(18,0)
 	    CONSTRAINT importe_alquiler_fk
@@ -596,6 +698,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
             REFERENCES LAS_CUATRO_CIFRAS.alquiler,
 )
 
+
+/* Se crea la tabla medio_pago para almacenar
+   los medios de pago tipificados que se pueden
+   utilizar para abonar los alquileres*/
 CREATE TABLE LAS_CUATRO_CIFRAS.medio_pago(
 	id_medio_pago numeric(18,0)
 	    IDENTITY(1,1)
@@ -604,6 +710,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.medio_pago(
 	descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
+
+/* Se crea la tabla pago_alquiler para almacenar
+   los pagos que realiza el inquilino sobre el
+   alquiler de un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.pago_alquiler(
 	id_pago_alquiler numeric(18,0)
 		CONSTRAINT pago_alquiler_pk
@@ -626,10 +736,14 @@ CREATE TABLE LAS_CUATRO_CIFRAS.pago_alquiler(
     CONSTRAINT CHK_Pago_Alquiler_Date CHECK (fecha_pago >= fecha_inicio)
 )
 
+
+/* Se crea la tabla comprador para almacenar
+   los datos de una persona que compra un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.comprador(
-	dni numeric(18,0)
+	id numeric(18,0) IDENTITY(1,1)
 	    CONSTRAINT dni_comprador_pk
 		    PRIMARY KEY,
+    dni numeric(18,0) NOT NULL,
 	nombre nvarchar(100) NOT NULL,
 	apellido nvarchar(100) NOT NULL,
 	fecha_registro datetime DEFAULT GETDATE(),
@@ -638,6 +752,12 @@ CREATE TABLE LAS_CUATRO_CIFRAS.comprador(
 	fecha_nacimiento datetime NOT NULL
 )
 
+
+/* Se crea la tabla pago de la venta para almacenar
+   las posibles divisiones de pagos que un comprador
+   puede hacer sobre el precio total del inmueble,
+   permitiendo así pagar cada parte con distinta moneda
+   y a través de distintos medios de pago*/
 CREATE TABLE LAS_CUATRO_CIFRAS.pago_venta(
     id_pago numeric(18,0) IDENTITY(1,1)
         CONSTRAINT pago_venta_pk
@@ -652,6 +772,9 @@ CREATE TABLE LAS_CUATRO_CIFRAS.pago_venta(
             REFERENCES LAS_CUATRO_CIFRAS.medio_pago
 )
 
+
+/* Se crea la tabla venta para almacenar
+   los datos de las ventas que se concretan*/
 CREATE TABLE LAS_CUATRO_CIFRAS.venta(
 	id_venta numeric(18,0)
         CONSTRAINT venta_pk
@@ -679,7 +802,9 @@ GO
 
 
 ----------------CREACIÓN DE INDICES-------------------
-
+/* Se crean los índices para las tablas de la base de datos
+   que poseen foreign keys, las cuales son consultadas
+   con mayor frecuencia*/
 CREATE INDEX direc_provincia_index
 ON LAS_CUATRO_CIFRAS.direccion(provincia);
 
@@ -689,8 +814,11 @@ ON LAS_CUATRO_CIFRAS.direccion(localidad);
 CREATE INDEX direc_barrio_index
 ON LAS_CUATRO_CIFRAS.direccion(barrio);
 
-CREATE INDEX inmueble_propietario_index
-ON LAS_CUATRO_CIFRAS.inmueble(id_propietario);
+CREATE INDEX propietario_inmueble_index
+ON LAS_CUATRO_CIFRAS.propietario(dni);
+
+CREATE INDEX inquilino_inmueble_index
+ON LAS_CUATRO_CIFRAS.inquilino(dni);
 
 CREATE INDEX inmueble_direccion_index
 ON LAS_CUATRO_CIFRAS.inmueble(id_direccion);
@@ -701,6 +829,9 @@ ON LAS_CUATRO_CIFRAS.inmueble_caracteristica(id_inmueble);
 CREATE INDEX sucursal_direccion_index
 ON LAS_CUATRO_CIFRAS.sucursal(direccion);
 
+CREATE INDEX agente_anuncio_index
+ON LAS_CUATRO_CIFRAS.agente(dni);
+
 CREATE INDEX anuncio_agente_index
 ON LAS_CUATRO_CIFRAS.anuncio(agente);
 
@@ -709,6 +840,9 @@ ON LAS_CUATRO_CIFRAS.alquiler(id_anuncio);
 
 CREATE INDEX pago_alquiler_alquiler_index
 ON LAS_CUATRO_CIFRAS.pago_alquiler(id_alquiler);
+
+CREATE INDEX comprador_venta_index
+ON LAS_CUATRO_CIFRAS.comprador(dni);
 
 CREATE INDEX venta_anuncio_index
 ON LAS_CUATRO_CIFRAS.venta(id_anuncio);
@@ -778,6 +912,7 @@ BEGIN
     INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
     WHERE m.INMUEBLE_DIRECCION IS NOT NULL
 
+    --Se insertan las direcciones de las sucursales, las cuales no poseen barrio en la tabla Maestra
     INSERT INTO LAS_CUATRO_CIFRAS.direccion(calle,provincia,localidad)
     SELECT DISTINCT m.SUCURSAL_DIRECCION, p.id_provincia, l.id_localidad
     FROM gd_esquema.Maestra m
@@ -838,8 +973,10 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.propietario_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.propietario(dni,nombre,apellido,fecha_registro,telefono,mail,fecha_nacimiento)
-    SELECT DISTINCT PROPIETARIO_DNI, PROPIETARIO_NOMBRE, PROPIETARIO_APELLIDO, PROPIETARIO_FECHA_REGISTRO, PROPIETARIO_TELEFONO, PROPIETARIO_MAIL, PROPIETARIO_FECHA_NAC
+    INSERT INTO LAS_CUATRO_CIFRAS.propietario(dni,nombre,apellido,fecha_registro,
+                                              telefono,mail,fecha_nacimiento)
+    SELECT DISTINCT PROPIETARIO_DNI, PROPIETARIO_NOMBRE, PROPIETARIO_APELLIDO, PROPIETARIO_FECHA_REGISTRO,
+                    PROPIETARIO_TELEFONO, PROPIETARIO_MAIL, PROPIETARIO_FECHA_NAC
     FROM gd_esquema.Maestra
     WHERE PROPIETARIO_DNI IS NOT NULL
 END
@@ -850,10 +987,10 @@ AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.inmueble(id_inmueble, tipo, descripcion, id_propietario, id_direccion, ambientes,
                                            superficie_total, disposicion, orientacion, estado, antiguedad, expensas)
-    SELECT m.INMUEBLE_CODIGO,
+    SELECT DISTINCT m.INMUEBLE_CODIGO,
            t.id_tipo,
            m.INMUEBLE_DESCRIPCION,
-           p.dni,
+           p.id,
            d.id_direccion,
            m.INMUEBLE_CANT_AMBIENTES,
            m.INMUEBLE_SUPERFICIETOTAL,
@@ -862,36 +999,22 @@ BEGIN
            e.id_estado,
            m.INMUEBLE_ANTIGUEDAD,
            m.INMUEBLE_EXPESAS
-    FROM (SELECT INMUEBLE_CODIGO,
-                 INMUEBLE_TIPO_INMUEBLE,
-                 INMUEBLE_DESCRIPCION,
-                 PROPIETARIO_DNI,
-                 INMUEBLE_DIRECCION,
-                 INMUEBLE_CANT_AMBIENTES,
-                 INMUEBLE_SUPERFICIETOTAL,
-                 INMUEBLE_DISPOSICION,
-                 INMUEBLE_ORIENTACION,
-                 INMUEBLE_ESTADO,
-                 INMUEBLE_ANTIGUEDAD,
-                 INMUEBLE_EXPESAS,
-                 INMUEBLE_PROVINCIA,
-                 INMUEBLE_LOCALIDAD,
-                 INMUEBLE_BARRIO,
-                 ROW_NUMBER() OVER (PARTITION BY INMUEBLE_DIRECCION ORDER BY INMUEBLE_CODIGO) AS rn
-          FROM gd_esquema.Maestra
-          WHERE INMUEBLE_CODIGO IS NOT NULL) AS m
-             INNER JOIN LAS_CUATRO_CIFRAS.tipo_inmueble t ON m.INMUEBLE_TIPO_INMUEBLE = t.descripcion
-             INNER JOIN LAS_CUATRO_CIFRAS.propietario p ON m.PROPIETARIO_DNI = p.dni
-             INNER JOIN LAS_CUATRO_CIFRAS.provincia pr ON m.INMUEBLE_PROVINCIA = pr.descripcion
-             INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion
-             INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
-             INNER JOIN LAS_CUATRO_CIFRAS.direccion d
-                        ON m.INMUEBLE_DIRECCION = d.calle AND d.barrio = b.id_barrio AND
-                           d.localidad = l.id_localidad AND d.provincia = pr.id_provincia
-             INNER JOIN LAS_CUATRO_CIFRAS.disposicion_inmueble di ON m.INMUEBLE_DISPOSICION = di.descripcion
-             INNER JOIN LAS_CUATRO_CIFRAS.orientacion_inmueble o ON m.INMUEBLE_ORIENTACION = o.descripcion
-             INNER JOIN LAS_CUATRO_CIFRAS.estado_inmueble e ON m.INMUEBLE_ESTADO = e.descripcion
-    WHERE m.rn = 1
+    FROM gd_esquema.Maestra m
+    INNER JOIN LAS_CUATRO_CIFRAS.tipo_inmueble t ON m.INMUEBLE_TIPO_INMUEBLE = t.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.propietario p ON m.PROPIETARIO_DNI = p.dni
+                                                      AND m.PROPIETARIO_NOMBRE = p.nombre
+                                                      AND m.PROPIETARIO_APELLIDO = p.apellido
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia pr ON m.INMUEBLE_PROVINCIA = pr.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.direccion d ON m.INMUEBLE_DIRECCION = d.calle
+                                                    AND d.barrio = b.id_barrio
+                                                    AND d.localidad = l.id_localidad
+                                                    AND d.provincia = pr.id_provincia
+    INNER JOIN LAS_CUATRO_CIFRAS.disposicion_inmueble di ON m.INMUEBLE_DISPOSICION = di.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.orientacion_inmueble o ON m.INMUEBLE_ORIENTACION = o.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.estado_inmueble e ON m.INMUEBLE_ESTADO = e.descripcion
+    WHERE INMUEBLE_CODIGO IS NOT NULL
 END
 GO
 
@@ -928,8 +1051,10 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.agente_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.agente(dni,nombre,apellido,fecha_nacimiento,fecha_registro,telefono,mail,sucursal)
-    SELECT DISTINCT AGENTE_DNI, AGENTE_NOMBRE, AGENTE_APELLIDO, AGENTE_FECHA_NAC, AGENTE_FECHA_REGISTRO, AGENTE_TELEFONO, AGENTE_MAIL, s.id_sucursal
+    INSERT INTO LAS_CUATRO_CIFRAS.agente(dni,nombre,apellido,fecha_nacimiento,
+                                         fecha_registro,telefono,mail,sucursal)
+    SELECT DISTINCT AGENTE_DNI, AGENTE_NOMBRE, AGENTE_APELLIDO, AGENTE_FECHA_NAC,
+                    AGENTE_FECHA_REGISTRO, AGENTE_TELEFONO, AGENTE_MAIL, s.id_sucursal
     FROM gd_esquema.Maestra
     INNER JOIN LAS_CUATRO_CIFRAS.sucursal s ON s.id_sucursal = gd_esquema.Maestra.SUCURSAL_CODIGO
     WHERE AGENTE_DNI IS NOT NULL
@@ -964,7 +1089,7 @@ BEGIN
                                           fecha_finalizacion,costo_publicacion)
     SELECT DISTINCT ANUNCIO_CODIGO,
                     ANUNCIO_FECHA_PUBLICACION,
-                    a.dni,
+                    a.id,
                     t.id_tipo_operacion,
                     i.id_inmueble,
                     ANUNCIO_PRECIO_PUBLICADO,
@@ -978,6 +1103,8 @@ BEGIN
         INNER JOIN LAS_CUATRO_CIFRAS.moneda m ON ANUNCIO_MONEDA = m.descripcion
         INNER JOIN LAS_CUATRO_CIFRAS.estado_anuncio e ON ANUNCIO_ESTADO = e.descripcion
         INNER JOIN LAS_CUATRO_CIFRAS.agente a ON AGENTE_DNI = a.dni
+                                                     AND AGENTE_NOMBRE = a.nombre
+                                                     AND AGENTE_APELLIDO = a.apellido
         INNER JOIN LAS_CUATRO_CIFRAS.inmueble i ON INMUEBLE_CODIGO = i.id_inmueble
     WHERE ANUNCIO_CODIGO IS NOT NULL AND INMUEBLE_CODIGO IS NOT NULL
 END
@@ -987,16 +1114,12 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.inquilino_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.inquilino(dni,nombre,apellido,fecha_registro,telefono,mail,fecha_nac)
-    SELECT INQUILINO_DNI, INQUILINO_NOMBRE, INQUILINO_APELLIDO, INQUILINO_FECHA_REGISTRO, INQUILINO_TELEFONO, INQUILINO_MAIL, INQUILINO_FECHA_NAC
-    FROM (
-        SELECT DISTINCT INQUILINO_DNI, INQUILINO_NOMBRE, INQUILINO_APELLIDO, INQUILINO_FECHA_REGISTRO,
-                        INQUILINO_TELEFONO, INQUILINO_MAIL, INQUILINO_FECHA_NAC,
-                        ROW_NUMBER() OVER (PARTITION BY INQUILINO_DNI ORDER BY INQUILINO_DNI) AS rn
-        FROM gd_esquema.Maestra
-        WHERE INQUILINO_DNI IS NOT NULL
-    ) m
-    WHERE m.rn = 1
+    INSERT INTO LAS_CUATRO_CIFRAS.inquilino(dni,nombre,apellido,
+                                            fecha_registro,telefono,mail,fecha_nac)
+    SELECT DISTINCT INQUILINO_DNI, INQUILINO_NOMBRE, INQUILINO_APELLIDO, INQUILINO_FECHA_REGISTRO,
+           INQUILINO_TELEFONO, INQUILINO_MAIL, INQUILINO_FECHA_NAC
+    FROM gd_esquema.Maestra
+    WHERE INQUILINO_DNI IS NOT NULL
 END
 GO
 
@@ -1032,10 +1155,12 @@ AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.alquiler(id_alquiler,fecha_inicio,fecha_fin,id_inquilino,id_anuncio,
                                            duracion,deposito,comision,gasto_averig,estado)
-    SELECT DISTINCT ALQUILER_CODIGO, ALQUILER_FECHA_INICIO, ALQUILER_FECHA_FIN, inq.dni, a.id_anuncio,
+    SELECT DISTINCT ALQUILER_CODIGO, ALQUILER_FECHA_INICIO, ALQUILER_FECHA_FIN, inq.id, a.id_anuncio,
                     ALQUILER_CANT_PERIODOS, ALQUILER_DEPOSITO, ALQUILER_COMISION, ALQUILER_GASTOS_AVERIGUA, e.id_estado
     FROM gd_esquema.Maestra
     INNER JOIN LAS_CUATRO_CIFRAS.inquilino inq ON inq.dni = INQUILINO_DNI
+                                                      AND inq.nombre = INQUILINO_NOMBRE
+                                                      AND inq.apellido = INQUILINO_APELLIDO
     INNER JOIN LAS_CUATRO_CIFRAS.anuncio a ON a.id_anuncio = ANUNCIO_CODIGO
     INNER JOIN LAS_CUATRO_CIFRAS.estado_alquiler e ON e.descripcion = ALQUILER_ESTADO
     WHERE ALQUILER_CODIGO IS NOT NULL
@@ -1074,7 +1199,8 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.pago_alquiler_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.pago_alquiler(id_pago_alquiler,fecha_pago,importe,id_alquiler, medio_pago,num_periodo,descripcion,fecha_inicio,fecha_fin)
+    INSERT INTO LAS_CUATRO_CIFRAS.pago_alquiler(id_pago_alquiler,fecha_pago,importe,id_alquiler,
+                                                medio_pago,num_periodo,descripcion,fecha_inicio,fecha_fin)
     SELECT DISTINCT PAGO_ALQUILER_CODIGO, PAGO_ALQUILER_FECHA, PAGO_ALQUILER_IMPORTE, ALQUILER_CODIGO,
                     m.id_medio_pago, PAGO_ALQUILER_NRO_PERIODO, PAGO_ALQUILER_DESC, PAGO_ALQUILER_FEC_INI,
                     PAGO_ALQUILER_FEC_FIN
@@ -1088,8 +1214,11 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.comprador_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.comprador(dni,nombre,apellido,fecha_registro,telefono,mail,fecha_nacimiento)
-    SELECT DISTINCT COMPRADOR_DNI, COMPRADOR_NOMBRE, COMPRADOR_APELLIDO, COMPRADOR_FECHA_REGISTRO, COMPRADOR_TELEFONO, COMPRADOR_MAIL, COMPRADOR_FECHA_NAC
+    INSERT INTO LAS_CUATRO_CIFRAS.comprador(dni,nombre,apellido,fecha_registro,
+                                            telefono,mail,fecha_nacimiento)
+    SELECT DISTINCT COMPRADOR_DNI, COMPRADOR_NOMBRE, COMPRADOR_APELLIDO,
+                    COMPRADOR_FECHA_REGISTRO, COMPRADOR_TELEFONO,
+                    COMPRADOR_MAIL, COMPRADOR_FECHA_NAC
     FROM gd_esquema.Maestra
     WHERE COMPRADOR_DNI IS NOT NULL
 END
@@ -1111,13 +1240,18 @@ CREATE PROCEDURE LAS_CUATRO_CIFRAS.venta_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.venta(id_venta,id_anuncio,id_comprador,fecha_venta,precio_venta,id_moneda,pago,comision_inmob)
-    SELECT DISTINCT VENTA_CODIGO, ANUNCIO_CODIGO, COMPRADOR_DNI, VENTA_FECHA, VENTA_PRECIO_VENTA, d.id_moneda, p.id_pago, VENTA_COMISION
+    SELECT DISTINCT VENTA_CODIGO, ANUNCIO_CODIGO, c.id, VENTA_FECHA, VENTA_PRECIO_VENTA, d.id_moneda, p.id_pago, VENTA_COMISION
     FROM gd_esquema.Maestra
     INNER JOIN LAS_CUATRO_CIFRAS.moneda d ON VENTA_MONEDA = d.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.pago_venta p ON PAGO_VENTA_IMPORTE = p.importe AND PAGO_VENTA_COTIZACION = p.cotizacion AND p.id_moneda = d.id_moneda
-    INNER JOIN LAS_CUATRO_CIFRAS.medio_pago m ON PAGO_VENTA_MEDIO_PAGO = m.descripcion AND m.id_medio_pago = p.medio_pago
+    INNER JOIN LAS_CUATRO_CIFRAS.pago_venta p ON PAGO_VENTA_IMPORTE = p.importe
+                                                     AND PAGO_VENTA_COTIZACION = p.cotizacion
+                                                     AND p.id_moneda = d.id_moneda
+    INNER JOIN LAS_CUATRO_CIFRAS.medio_pago m ON PAGO_VENTA_MEDIO_PAGO = m.descripcion
+                                                     AND m.id_medio_pago = p.medio_pago
     INNER JOIN LAS_CUATRO_CIFRAS.anuncio a ON a.id_anuncio = ANUNCIO_CODIGO
     INNER JOIN LAS_CUATRO_CIFRAS.comprador c ON c.dni = COMPRADOR_DNI
+                                                    AND c.nombre = COMPRADOR_NOMBRE
+                                                    AND c.apellido = COMPRADOR_APELLIDO
     WHERE VENTA_CODIGO IS NOT NULL
 END
 GO
@@ -1128,6 +1262,7 @@ GO
 ---------------MIGRACIÓN-----------------------------
 
 BEGIN TRANSACTION
+--- Se ejecutan los procedimientos de migración de datos y si falla alguno se hace rollback y se muestra un error
 BEGIN TRY
     EXECUTE LAS_CUATRO_CIFRAS.tipo_operacion_migration
     EXECUTE LAS_CUATRO_CIFRAS.provincia_migration
@@ -1156,7 +1291,7 @@ BEGIN TRY
     EXECUTE LAS_CUATRO_CIFRAS.pago_alquiler_migration
     EXECUTE LAS_CUATRO_CIFRAS.comprador_migration
     EXECUTE LAS_CUATRO_CIFRAS.pago_venta_migration
-    EXECUTE LAS_CUATRO_CIFRAS.venta_migration --
+    EXECUTE LAS_CUATRO_CIFRAS.venta_migration
 END TRY
 BEGIN CATCH
     ROLLBACK TRANSACTION;
@@ -1173,17 +1308,18 @@ DECLARE @sql nvarchar(max)
 DECLARE table_cursor CURSOR FOR
 SELECT name
 FROM sys.tables
--- CHECKEAR ESTO
 WHERE name IN ('tipo_operacion', 'provincia', 'localidad', 'barrio', 'direccion', 'tipo_inmueble', 'disposicion_inmueble',
                'estado_inmueble', 'orientacion_inmueble', 'caracteristica', 'propietario', 'inmueble', 'inmueble_caracteristica',
-               'sucursal', 'agente', 'moneda', 'anuncio', 'inquilino', 'importe_alquiler', 'alquiler', 'medio_pago', 'pago_alquiler',
-               'comprador', 'pago_venta', 'venta')
+               'sucursal', 'agente', 'moneda', 'estado_anuncio', 'anuncio', 'inquilino', 'importe', 'estado_alquiler', 'alquiler',
+               'importe_alquiler', 'medio_pago', 'pago_alquiler', 'comprador', 'pago_venta', 'venta')
 
 OPEN table_cursor
 
 FETCH NEXT FROM table_cursor INTO @table_name
 
 WHILE @@FETCH_STATUS = 0
+    /* Se realiza una comprobación de que todas las tablas hayan sido migradas correctamente y posean al menos un registro.
+    Si falla una de las comprobaciones, se muestra el error especificando el nombre de la tabla*/
 BEGIN
     SET @sql = N'SELECT @count = COUNT(*) FROM LAS_CUATRO_CIFRAS.' + QUOTENAME(@table_name)
     EXEC sp_executesql @sql, N'@count int OUTPUT', @count=@count OUTPUT
@@ -1191,7 +1327,8 @@ BEGIN
     IF @count = 0
     BEGIN
         SET @error_message =
-                N'Error al migrar una o más tablas. Todos los cambios fueron revertidos y ninguna tabla del schema LAS_CUATRO_CIFRAS fue cargada en la base.'
+                N'Error al migrar la tabla' + QUOTENAME(@table_name) +
+                '. Todos los cambios fueron revertidos y ninguna tabla del schema LAS_CUATRO_CIFRAS fue cargada en la base.'
         ROLLBACK TRANSACTION;
         THROW 50002, @error_message,1;
     END
