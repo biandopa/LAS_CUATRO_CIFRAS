@@ -458,7 +458,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.caracteristica
 CREATE TABLE LAS_CUATRO_CIFRAS.propietario
 (
     id numeric(18, 0) IDENTITY(1,1)
-        CONSTRAINT dni_propietario_pk
+        CONSTRAINT id_propietario_pk
             PRIMARY KEY,
     dni numeric(18, 0) NOT NULL,
     nombre nvarchar(100) NOT NULL,
@@ -490,7 +490,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inmueble
             REFERENCES LAS_CUATRO_CIFRAS.direccion,
     ambientes nvarchar(100) NOT NULL,
     superficie_total numeric(18,2) NOT NULL,
-    disposicion numeric(18,0) NOT NULL
+    disposicion numeric(18,0)
         CONSTRAINT disposicion_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.disposicion_inmueble,
     orientacion numeric(18,0) NOT NULL
@@ -541,7 +541,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.sucursal
 CREATE TABLE LAS_CUATRO_CIFRAS.agente
 (
     id numeric(18,0) IDENTITY(1,1)
-        CONSTRAINT dni_agente_pk
+        CONSTRAINT id_agente_pk
             PRIMARY KEY,
     dni numeric(18,0) NOT NULL,
     nombre nvarchar(100) NOT NULL,
@@ -617,7 +617,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.anuncio
    a las personas que alquilan un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.inquilino(
 	id numeric(18,0) IDENTITY(1,1)
-		CONSTRAINT dni_inquilino_pk
+		CONSTRAINT id_inquilino_pk
 		    PRIMARY KEY,
     dni numeric(18,0) NOT NULL,
 	nombre nvarchar(100) NOT NULL,
@@ -690,7 +690,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.alquiler(
    los importes de los alquileres pagados por el inquilino
    a la inmobiliaria*/
 CREATE TABLE LAS_CUATRO_CIFRAS.importe_alquiler(
-	id_importe numeric(18,0)
+	id_importe numeric(18,0) NOT NULL
 	    CONSTRAINT importe_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.importe,
 	id_alquiler numeric(18,0) NOT NULL
@@ -741,7 +741,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.pago_alquiler(
    los datos de una persona que compra un inmueble*/
 CREATE TABLE LAS_CUATRO_CIFRAS.comprador(
 	id numeric(18,0) IDENTITY(1,1)
-	    CONSTRAINT dni_comprador_pk
+	    CONSTRAINT id_comprador_pk
 		    PRIMARY KEY,
     dni numeric(18,0) NOT NULL,
 	nombre nvarchar(100) NOT NULL,
