@@ -832,6 +832,9 @@ ON LAS_CUATRO_CIFRAS.sucursal(direccion);
 CREATE INDEX agente_anuncio_index
 ON LAS_CUATRO_CIFRAS.agente(dni);
 
+CREATE INDEX BI_comprador_index
+ON LAS_CUATRO_CIFRAS.comprador(dni);
+
 CREATE INDEX anuncio_agente_index
 ON LAS_CUATRO_CIFRAS.anuncio(agente);
 
