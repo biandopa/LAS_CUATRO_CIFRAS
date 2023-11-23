@@ -4,6 +4,106 @@ GO
 --------------------DROPS PREVENTIVOS ---------------------------
 /* PARA NO TENER ERRORES DE DEPENDECIAS NI DATOS DUPLICADOS */
 
+
+---------------DROP PREVENTIVO DE FOREIGN KEYS---------------------
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_provincia_ubicacion_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_ubicacion DROP CONSTRAINT bi_provincia_ubicacion_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_localidad_ubicacion_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_ubicacion DROP CONSTRAINT bi_localidad_ubicacion_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_barrio_ubicacion_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_ubicacion DROP CONSTRAINT bi_barrio_ubicacion_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_tipo_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_tipo_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_propietario_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_propietario_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_direccion_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_direccion_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_ambiente_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_ambiente_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_rango_m2_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_rango_m2_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_disposicion_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_disposicion_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_orientacion_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_orientacion_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_estado_inmueble_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_estado_inmueble_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_direccion_sucursal_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_sucursal DROP CONSTRAINT bi_direccion_sucursal_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_rango_etario_agente_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_agente DROP CONSTRAINT bi_rango_etario_agente_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_sucursal_agente_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_agente DROP CONSTRAINT bi_sucursal_agente_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_rango_etario_inquilino_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inquilino DROP CONSTRAINT bi_rango_etario_inquilino_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_moneda_pago_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_pago_venta DROP CONSTRAINT bi_moneda_pago_venta_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_medio_pago_pago_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_pago_venta DROP CONSTRAINT bi_medio_pago_pago_venta_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_agente_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_agente_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_tipo_operacion_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_tipo_operacion_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_inmueble_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_inmueble_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_moneda_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_moneda_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_estado_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_estado_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_agente_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_agente_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_anuncio_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_anuncio_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_inquilino_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_inquilino_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_estado_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_estado_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_anuncio_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_venta DROP CONSTRAINT bi_anuncio_venta_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_comprador_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_venta DROP CONSTRAINT bi_comprador_venta_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_moneda_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_venta DROP CONSTRAINT bi_moneda_venta_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_pago_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_venta DROP CONSTRAINT bi_pago_venta_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_alquiler_pago_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_alquiler_pago_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_medio_pago_pago_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_medio_pago_pago_alquiler_fk
+
+GO
+
 -------------------DROPS DE TABLAS DIMENSIONALES------------------------
 
 IF EXISTS(SELECT [name] FROM sys.tables WHERE [name] = 'BI_dim_ubicacion')
@@ -126,8 +226,132 @@ IF EXISTS(SELECT [name] FROM sys.objects WHERE [name] = 'GetCuatrimestre')
     DROP FUNCTION LAS_CUATRO_CIFRAS.GetCuatrimestre
 
 
+GO
 
 
+---------------DROP PREVENTIVOS DE STORED PROCEDURES------------------------
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimTiempo')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimTiempo
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimRangoEtario')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimRangoEtario
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimTipoOperacion')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimTipoOperacion
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimProvincia')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimProvincia
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimLocalidad')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimLocalidad
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimBarrio')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimBarrio
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimUbicacion')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimUbicacion
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimTipoInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimTipoInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimDisposicionInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimDisposicionInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimEstadoInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimEstadoInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimOrientacionInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimOrientacionInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimAmbientesInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimAmbientesInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimRangoM2Inmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimRangoM2Inmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimCaracteristicas')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimCaracteristicas
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimPropietario')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimPropietario
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimSucursal')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimSucursal
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimAgente')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimAgente
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimEstadoAnuncio')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimEstadoAnuncio
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimInquilino')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimInquilino
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimImporte')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimImporte
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimEstadoAlquiler')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimEstadoAlquiler
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimMedioDePago')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimMedioDePago
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimComprador')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimComprador
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateFactAnuncio')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateFactAnuncio
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateFactAlquiler')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateFactAlquiler
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateFactVenta')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateFactVenta
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateFactPagoAlquiler')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateFactPagoAlquiler
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateBridgeCaracteristicaInmueble')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateBridgeCaracteristicaInmueble
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateBridgeImporteAlquiler')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateBridgeImporteAlquiler
+
+GO
+
+
+---------------DROP PREVENTIVO DE VISTAS------------------------
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PromAnuncioPublicado')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PromAnuncioPublicado
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PromPrecioAnuncio')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PromPrecioAnuncio
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_Top5BarriosAlquiler')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_Top5BarriosAlquiler
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PorcentajeIncumplimientoPagos')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PorcentajeIncumplimientoPagos
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PromIncrementoAlquiler')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PromIncrementoAlquiler
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PromPrecioM2Venta')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PromPrecioM2Venta
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PromComision')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PromComision
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_PorcentOperacionesConcretadas')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_PorcentOperacionesConcretadas
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'BI_V_MontoTotalCierreContratos')
+DROP VIEW LAS_CUATRO_CIFRAS.BI_V_MontoTotalCierreContratos
+
+GO
 
 
 ---------------CREACIÓN DE COMPONENTES--------------------
@@ -767,6 +991,7 @@ END
 GO
 
 
+
 -----------------CREACIÓN DE STORED PROCEDURES PARA LA MIGRACIÓN----------------------
 
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimTiempo
@@ -1389,4 +1614,247 @@ AS
     END
 GO
 
+
+
+---------------------------CREACIÓN DE VISTAS---------------------------
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PromAnuncioPublicado AS
+SELECT
+    op.descripcion AS tipo_operacion,
+    b.descripcion AS barrio,
+    am.descripcion AS ambientes,
+    t2.año,
+    t2.cuatrimestre,
+    AVG(DATEDIFF(DAY, DATEFROMPARTS(t1.año, t2.mes, t1.dia), DATEFROMPARTS(t2.año, t2.mes, t2.dia))) AS duracion_promedio
+FROM LAS_CUATRO_CIFRAS.BI_fact_anuncio a
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_operacion op ON a.tipo_operacion = op.id_tipo_operacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_inmueble i ON a.inmueble = i.id_inmueble
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_ubicacion u ON i.id_direccion = u.id_ubicacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_barrio b ON u.barrio = b.id_barrio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_ambiente_inmueble am ON i.ambientes = am.id_ambiente
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t1 ON a.fecha_publicacion = t1.id_tiempo
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t2 ON a.fecha_finalizacion = t2.id_tiempo
+                                                     AND t2.año = t1.año
+                                                     AND t2.cuatrimestre = t1.cuatrimestre
+                                                     AND t2.mes = t1.mes
+GROUP BY
+    op.descripcion,
+    b.descripcion,
+    am.descripcion,
+    t2.año,
+    t2.cuatrimestre
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PromPrecioAnuncio AS
+SELECT
+    op.descripcion AS tipo_operacion,
+    ti.descripcion AS tipo_inmueble,
+    r.rango AS rango_m2,
+    t.año,
+    t.cuatrimestre,
+    m.descripcion AS moneda,
+    CAST(AVG(a.precio_inmueble) AS DECIMAL(10,2)) AS precio_promedio
+FROM LAS_CUATRO_CIFRAS.BI_fact_anuncio a
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_operacion op ON a.tipo_operacion = op.id_tipo_operacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_inmueble i ON a.inmueble = i.id_inmueble
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_inmueble ti ON i.tipo = ti.id_tipo_inmueble
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_m2_inmueble r ON i.rango_m2 = r.id_rango_m2
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON a.fecha_publicacion = t.id_tiempo
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_moneda m ON a.moneda = m.id_tipo_moneda
+GROUP BY
+    op.descripcion,
+    ti.descripcion,
+    r.rango,
+    t.año,
+    t.cuatrimestre,
+    m.descripcion
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_Top5BarriosAlquiler AS
+SELECT TOP 5 WITH TIES
+    b.descripcion AS barrio,
+    re.rango AS rango_etario,
+    t.año,
+    t.cuatrimestre,
+    COUNT(*) AS cantidad_alquileres
+FROM LAS_CUATRO_CIFRAS.BI_fact_alquiler a
+INNER JOIN LAS_CUATRO_CIFRAS.BI_fact_anuncio an ON a.id_anuncio = an.id_anuncio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_inmueble inm ON an.inmueble = inm.id_inmueble
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_ubicacion u ON inm.id_direccion = u.id_ubicacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_barrio b ON u.barrio = b.id_barrio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_inquilino i ON a.id_inquilino = i.id
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_etario re ON i.rango_etario = re.id_rango_etario
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON a.fecha_inicio = t.id_tiempo
+GROUP BY
+    b.descripcion,
+    re.rango,
+    t.año,
+    t.cuatrimestre
+ORDER BY
+    5 DESC
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PorcentajeIncumplimientoPagos AS
+SELECT
+    t.año,
+    t.mes,
+    CAST(CAST(SUM(CASE
+        WHEN p.fecha_pago > p.fecha_fin
+            THEN 1
+        ELSE 0
+        END) AS FLOAT) / COUNT(*) * 100 AS DECIMAL(10,2)) AS porcentaje_incumplimiento
+FROM LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler p
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON p.fecha_pago = t.id_tiempo
+GROUP BY
+    t.año,
+    t.mes
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PromIncrementoAlquiler AS
+WITH Incrementos AS (
+    SELECT
+        a.id_alquiler,
+        pa.fecha_pago AS fecha_pago_actual,
+        pa.importe AS importe_actual,
+        pa2.fecha_pago AS fecha_pago_anterior,
+        pa2.importe AS importe_anterior,
+        ea.descripcion AS estado_alquiler
+    FROM LAS_CUATRO_CIFRAS.BI_fact_alquiler a
+    INNER JOIN LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler pa ON a.id_alquiler = pa.id_alquiler
+    INNER JOIN LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler pa2 ON a.id_alquiler = pa2.id_alquiler
+    INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON pa.fecha_pago = t.id_tiempo
+    INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t2 ON pa2.fecha_pago = t2.id_tiempo
+    INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_estado_alquiler ea ON ea.id_estado = a.estado
+                                                                  AND ea.descripcion = 'Activo'
+    WHERE pa.importe > pa2.importe
+        AND DATEFROMPARTS(t.año, t.mes, t.dia) > DATEFROMPARTS(t2.año, t2.mes, t2.dia)
+)
+SELECT
+    i.id_alquiler,
+    t.año,
+    t.mes,
+    CAST(AVG((i.importe_actual - i.importe_anterior) / i.importe_anterior * 100) AS DECIMAL(10,2)) AS porcentaje_promedio_incremento
+FROM Incrementos i
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON i.fecha_pago_actual = t.id_tiempo
+GROUP BY
+    i.id_alquiler,
+    t.año,
+    t.mes
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PromPrecioM2Venta AS
+SELECT
+    ti.descripcion AS tipo_inmueble,
+    l.descripcion AS localidad,
+    t.año,
+    t.cuatrimestre,
+    r.rango AS rango_m2,
+    CAST(AVG(v.precio_venta) AS DECIMAL(15,2)) AS precio_promedio
+FROM LAS_CUATRO_CIFRAS.BI_fact_venta v
+INNER JOIN LAS_CUATRO_CIFRAS.BI_fact_anuncio a on v.id_anuncio = a.id_anuncio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_inmueble i ON a.inmueble = i.id_inmueble
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_inmueble ti ON i.tipo = ti.id_tipo_inmueble
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_ubicacion u ON i.id_direccion = u.id_ubicacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_localidad l ON u.localidad = l.id_localidad
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON v.fecha_venta = t.id_tiempo
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_m2_inmueble r ON i.rango_m2 = r.id_rango_m2
+GROUP BY
+    ti.descripcion,
+    l.descripcion,
+    t.año,
+    t.cuatrimestre,
+    r.rango
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PromComision AS
+SELECT
+    op.descripcion AS tipo_operacion,
+    s.nombre AS sucursal,
+    t.año,
+    t.cuatrimestre,
+    CAST(AVG(tr.comision) AS DECIMAL(10,2)) AS comision_promedio
+FROM
+    (SELECT fa.id_alquiler AS id, fa.comision AS comision, fa.fecha_inicio AS fecha, fa.id_anuncio AS anuncio
+     FROM LAS_CUATRO_CIFRAS.BI_fact_alquiler fa
+     UNION ALL
+     SELECT fv.id_venta AS id, fv.comision_inmob, fv.fecha_venta AS fecha, fv.id_anuncio AS anuncio
+     FROM LAS_CUATRO_CIFRAS.BI_fact_venta fv
+    ) AS tr
+INNER JOIN LAS_CUATRO_CIFRAS.BI_fact_anuncio an ON tr.anuncio = an.id_anuncio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_operacion op ON an.tipo_operacion = op.id_tipo_operacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_agente ag ON an.agente = ag.id
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_sucursal s ON ag.sucursal = s.id_sucursal
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON tr.fecha = t.id_tiempo
+GROUP BY
+    op.descripcion,
+    s.nombre,
+    t.año,
+    t.cuatrimestre
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_PorcentOperacionesConcretadas AS
+SELECT
+    s.nombre AS sucursal,
+    re.rango AS rango_etario,
+    t.año,
+    CAST(
+        CAST(
+            SUM(
+                CASE
+                WHEN a.id_alquiler IS NOT NULL
+                    OR v.id_venta IS NOT NULL
+                    THEN 1
+                ELSE 0 END) AS FLOAT)
+            /
+        COUNT(an.id_anuncio) * 100
+        AS DECIMAL(10,2)) AS porcentaje_operaciones_concretadas
+FROM LAS_CUATRO_CIFRAS.BI_fact_anuncio an
+LEFT JOIN LAS_CUATRO_CIFRAS.BI_fact_alquiler a ON an.id_anuncio = a.id_anuncio
+LEFT JOIN LAS_CUATRO_CIFRAS.BI_fact_venta v ON an.id_anuncio = v.id_anuncio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_agente ag ON an.agente = ag.id
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_sucursal s ON ag.sucursal = s.id_sucursal
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_etario re ON ag.rango_etario = re.id_rango_etario
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON an.fecha_publicacion = t.id_tiempo
+GROUP BY
+    s.nombre,
+    re.rango,
+    t.año
+GO
+
+
+CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_MontoTotalCierreContratos AS
+SELECT
+    op.descripcion AS tipo_operacion,
+    s.nombre AS sucursal,
+    t.año,
+    t.cuatrimestre,
+    m.descripcion AS moneda,
+    SUM(tr.comision) AS monto_total
+FROM
+    (SELECT fa.id_alquiler AS id, fa.comision AS comision, fa.fecha_inicio AS fecha, fa.id_anuncio AS anuncio
+     FROM LAS_CUATRO_CIFRAS.BI_fact_alquiler fa
+     UNION ALL
+     SELECT fv.id_venta AS id, fv.comision_inmob, fv.fecha_venta AS fecha, fv.id_anuncio AS anuncio
+     FROM LAS_CUATRO_CIFRAS.BI_fact_venta fv
+    ) AS tr
+INNER JOIN LAS_CUATRO_CIFRAS.BI_fact_anuncio an ON tr.anuncio = an.id_anuncio
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_operacion op ON an.tipo_operacion = op.id_tipo_operacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_agente ag ON an.agente = ag.id
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_sucursal s ON ag.sucursal = s.id_sucursal
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON tr.fecha = t.id_tiempo
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_moneda m ON an.moneda = m.id_tipo_moneda
+GROUP BY
+    op.descripcion,
+    s.nombre,
+    t.año,
+    t.cuatrimestre,
+    m.descripcion
+GO
 
