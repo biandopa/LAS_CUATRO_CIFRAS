@@ -15,6 +15,12 @@ IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_localidad_ubica
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_barrio_ubicacion_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_ubicacion DROP CONSTRAINT bi_barrio_ubicacion_fk
 
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_registro_propietario_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_propietario DROP CONSTRAINT bi_fecha_registro_propietario_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_nacimiento_propietario_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_propietario DROP CONSTRAINT bi_fecha_nacimiento_propietario_fk
+
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_tipo_inmueble_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inmueble DROP CONSTRAINT bi_tipo_inmueble_fk
 
@@ -42,14 +48,26 @@ IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_estado_inmueble
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_direccion_sucursal_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_sucursal DROP CONSTRAINT bi_direccion_sucursal_fk
 
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_registro_agente_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_agente DROP CONSTRAINT bi_fecha_registro_agente_fk
+
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_rango_etario_agente_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_agente DROP CONSTRAINT bi_rango_etario_agente_fk
 
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_sucursal_agente_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_agente DROP CONSTRAINT bi_sucursal_agente_fk
 
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_registro_inquilino_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inquilino DROP CONSTRAINT bi_fecha_registro_inquilino_fk
+
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_rango_etario_inquilino_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_inquilino DROP CONSTRAINT bi_rango_etario_inquilino_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_nacimiento_comprador_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_comprador DROP CONSTRAINT bi_fecha_nacimiento_comprador_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_registro_comprador_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_comprador DROP CONSTRAINT bi_fecha_registro_comprador_fk
 
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_moneda_pago_venta_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_dim_pago_venta DROP CONSTRAINT bi_moneda_pago_venta_fk
@@ -59,6 +77,12 @@ IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_medio_pago_pago
 
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_agente_anuncio_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_agente_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_finalizacion_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_fecha_finalizacion_anuncio_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_publicacion_anuncio_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_fecha_publicacion_anuncio_fk
 
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_tipo_operacion_anuncio_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio DROP CONSTRAINT bi_tipo_operacion_anuncio_fk
@@ -81,6 +105,12 @@ IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_anuncio_alquile
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_inquilino_alquiler_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_inquilino_alquiler_fk
 
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_fin_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_fecha_fin_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_inicio_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_fecha_inicio_alquiler_fk
+
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_estado_alquiler_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler DROP CONSTRAINT bi_estado_alquiler_fk
 
@@ -96,11 +126,35 @@ IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_moneda_venta_fk
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_pago_venta_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_venta DROP CONSTRAINT bi_pago_venta_fk
 
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_venta_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_venta DROP CONSTRAINT bi_fecha_venta_fk
+
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_alquiler_pago_alquiler_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_alquiler_pago_alquiler_fk
 
 IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_medio_pago_pago_alquiler_fk')
     ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_medio_pago_pago_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_fin_pago_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_fecha_fin_pago_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_inicio_pago_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_fecha_inicio_pago_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_fecha_pago_pago_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler DROP CONSTRAINT bi_fecha_pago_pago_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_caracteristica_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_bridge_inmueble_caracteristica DROP CONSTRAINT bi_caracteristica_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_inmueble_caracteristica_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_bridge_inmueble_caracteristica DROP CONSTRAINT bi_inmueble_caracteristica_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_alquiler_importe_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_bridge_importe_alquiler DROP CONSTRAINT bi_alquiler_importe_alquiler_fk
+
+IF EXISTS(SELECT [name] FROM sys.foreign_keys WHERE [name] = 'bi_importe_alquiler_fk')
+    ALTER TABLE LAS_CUATRO_CIFRAS.BI_bridge_importe_alquiler DROP CONSTRAINT bi_importe_alquiler_fk
 
 GO
 
@@ -354,6 +408,8 @@ DROP VIEW LAS_CUATRO_CIFRAS.BI_V_MontoTotalCierreContratos
 GO
 
 
+
+
 ---------------CREACIÓN DE COMPONENTES--------------------
 
 -------------------CREACIÓN DE TABLAS DIMENSIONALES------------------------
@@ -502,12 +558,12 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_dim_propietario
     nombre nvarchar(100) NOT NULL,
     apellido nvarchar(100) NOT NULL,
     fecha_registro numeric(18, 0) NOT NULL
-    CONSTRAINT bi_fecha_registro_propietario_ck
+    CONSTRAINT bi_fecha_registro_propietario_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
     telefono numeric(18, 0) NOT NULL,
     mail nvarchar (255),
     fecha_nacimiento numeric(18, 0) NOT NULL
-        CONSTRAINT bi_fecha_nacimiento_propietario_ck
+        CONSTRAINT bi_fecha_nacimiento_propietario_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 )
 
@@ -571,7 +627,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_dim_agente
     nombre nvarchar(100) NOT NULL,
     apellido nvarchar(100) NOT NULL,
     fecha_registro numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_registro_agente_ck
+        CONSTRAINT bi_fecha_registro_agente_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
     telefono numeric(18,0) NOT NULL,
     mail nvarchar(100) NOT NULL,
@@ -611,7 +667,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_dim_inquilino(
 	nombre nvarchar(100) NOT NULL,
 	apellido nvarchar(100) NOT NULL,
 	fecha_registro numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_registro_inquilino_ck
+        CONSTRAINT bi_fecha_registro_inquilino_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	telefono numeric(18,0) NOT NULL,
 	mail nvarchar(100),
@@ -663,12 +719,12 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_dim_comprador(
 	nombre nvarchar(100) NOT NULL,
 	apellido nvarchar(100) NOT NULL,
 	fecha_registro numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_registro_comprador_ck
+        CONSTRAINT bi_fecha_registro_comprador_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	telefono nvarchar(100) NOT NULL,
 	mail nvarchar(100),
 	fecha_nacimiento numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_nacimiento_comprador_ck
+        CONSTRAINT bi_fecha_nacimiento_comprador_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo
 )
 
@@ -700,7 +756,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio
         CONSTRAINT bi_anuncio_pk
             PRIMARY KEY,
     fecha_publicacion numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_publicacion_anuncio_ck
+        CONSTRAINT bi_fecha_publicacion_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
     agente numeric(18,0) NOT NULL
         CONSTRAINT bi_agente_anuncio_fk
@@ -720,7 +776,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_fact_anuncio
         CONSTRAINT bi_estado_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_estado_anuncio,
     fecha_finalizacion numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_finalizacion_anuncio_ck
+        CONSTRAINT bi_fecha_finalizacion_anuncio_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
     costo_publicacion numeric(18,2) NOT NULL
 )
@@ -738,10 +794,10 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_fact_alquiler(
 		CONSTRAINT bi_inquilino_alquiler_fk
 			REFERENCES LAS_CUATRO_CIFRAS.BI_dim_inquilino,
     fecha_fin numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_fin_alquiler_ck
+        CONSTRAINT bi_fecha_fin_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	fecha_inicio numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_inicio_alquiler_ck
+        CONSTRAINT bi_fecha_inicio_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	duracion numeric(18,0),
 	deposito numeric(18,2) NOT NULL,
@@ -767,7 +823,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_fact_venta(
         CONSTRAINT bi_comprador_venta_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_comprador,
     fecha_venta numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_venta_ck
+        CONSTRAINT bi_fecha_venta_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	precio_venta numeric(18,0) NOT NULL,
 	id_moneda numeric(18,0)
@@ -796,13 +852,13 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_fact_pago_alquiler(
 	num_periodo numeric(18,0) NOT NULL,
 	descripcion varchar(100) NOT NULL,
 	fecha_pago numeric(18,0) NOT NULL
-	    CONSTRAINT bi_fecha_pago_pago_alquiler_ck
+	    CONSTRAINT bi_fecha_pago_pago_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	fecha_inicio numeric(18,0) NOT NULL
-	    CONSTRAINT bi_fecha_inicio_pago_alquiler_ck
+	    CONSTRAINT bi_fecha_inicio_pago_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	fecha_fin numeric(18,0) NOT NULL
-        CONSTRAINT bi_fecha_fin_pago_alquiler_ck
+        CONSTRAINT bi_fecha_fin_pago_alquiler_fk
             REFERENCES LAS_CUATRO_CIFRAS.BI_dim_tiempo,
 	importe numeric(18,2) NOT NULL
 )
@@ -1858,3 +1914,91 @@ GROUP BY
     m.descripcion
 GO
 
+
+
+---------------MIGRACIÓN-----------------------------
+
+BEGIN TRANSACTION
+--- Se ejecutan los procedimientos de migración de datos y si falla alguno se hace rollback y se muestra un error
+BEGIN TRY
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimTiempo
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimRangoEtario
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimTipoOperacion
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimProvincia
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimLocalidad
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimBarrio
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimUbicacion
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimTipoInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimDisposicionInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimEstadoInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimOrientacionInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimAmbientesInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimRangoM2Inmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimCaracteristicas
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimPropietario
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimSucursal
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimAgente
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimTipoMoneda
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimEstadoAnuncio
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimInquilino
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimImporte
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimEstadoAlquiler
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimMedioDePago
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimComprador
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateDimPagoVenta
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateFactAnuncio
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateFactAlquiler
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateFactVenta
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateFactPagoAlquiler
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateBridgeCaracteristicaInmueble
+    EXECUTE LAS_CUATRO_CIFRAS.MigrateBridgeImporteAlquiler
+    END TRY
+BEGIN CATCH
+    ROLLBACK TRANSACTION;
+	THROW 50001, N'Error al migrar las tablas al modelo BI. Verifique que éstas tablas se encuentren vacías o bien ejecute un DROP de todas las nuevas tablas y vuelva a intentarlo.',1;
+END CATCH
+
+BEGIN
+DECLARE @table_name nvarchar(128)
+DECLARE @count int
+DECLARE @error_message nvarchar(255)
+DECLARE @sql nvarchar(max)
+
+DECLARE table_cursor CURSOR FOR
+SELECT name
+FROM sys.tables
+WHERE name IN ('BI_dim_tiempo', 'BI_dim_rango_etario', 'BI_dim_tipo_operacion', 'BI_dim_provincia', 'BI_dim_localidad',
+               'BI_dim_barrio', 'BI_dim_ubicacion', 'BI_dim_tipo_inmueble', 'BI_dim_disposicion_inmueble', 'BI_dim_estado_inmueble',
+               'BI_dim_orientacion_inmueble', 'BI_dim_ambientes_inmueble', 'BI_dim_rango_m2_inmueble', 'BI_dim_caracteristicas',
+               'BI_dim_propietario', 'BI_dim_inmueble', 'BI_dim_sucursal', 'BI_dim_agente', 'BI_dim_tipo_moneda', 'BI_dim_estado_anuncio',
+               'BI_dim_inquilino', 'BI_dim_importe', 'BI_dim_estado_alquiler', 'BI_dim_medio_de_pago', 'BI_dim_comprador',
+               'BI_dim_pago_venta', 'BI_fact_anuncio', 'BI_fact_alquiler', 'BI_fact_venta', 'BI_fact_pago_alquiler',
+               'BI_bridge_caracteristica_inmueble', 'BI_bridge_importe_alquiler')
+
+OPEN table_cursor
+FETCH NEXT FROM table_cursor INTO @table_name
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    SET @sql = N'SELECT @count = COUNT(*) FROM LAS_CUATRO_CIFRAS.' + QUOTENAME(@table_name)
+    EXEC sp_executesql @sql, N'@count int OUTPUT', @count=@count OUTPUT
+
+    IF @count = 0
+    BEGIN
+    SET @error_message =
+                N'Error al migrar la tabla' + QUOTENAME(@table_name) +
+                '. Todos los cambios fueron revertidos y ninguna tabla del schema LAS_CUATRO_CIFRAS fue cargada en la base.'
+        ROLLBACK TRANSACTION;
+        THROW 50002, @error_message,1;
+    END
+
+    FETCH NEXT FROM table_cursor INTO @table_name
+END
+
+CLOSE table_cursor
+DEALLOCATE table_cursor
+
+PRINT N'Tablas migradas correctamente.'
+COMMIT TRANSACTION
+END
+GO
