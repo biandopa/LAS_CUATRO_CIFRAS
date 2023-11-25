@@ -528,7 +528,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_dim_ambiente_inmueble(
     id_ambiente numeric(18,0)
         IDENTITY(1,1)
         CONSTRAINT bi_id_ambiente_pk PRIMARY KEY,
-    descripcion nvarchar(100) NOT NULL
+    descripcion nvarchar(100) NOT NULL UNIQUE
 )
 
 -- Creación de la tabla rango m2
@@ -536,7 +536,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.BI_dim_rango_m2_inmueble(
     id_rango_m2 numeric(18,0)
         IDENTITY(1,1)
         CONSTRAINT bi_id_rango_m2_pk PRIMARY KEY,
-    rango nvarchar(10) NOT NULL
+    rango nvarchar(10) NOT NULL UNIQUE
 )
 
 -- Creación de la tabla característica del inmueble
@@ -915,7 +915,7 @@ ON LAS_CUATRO_CIFRAS.BI_dim_sucursal(direccion);
 CREATE INDEX BI_agente_anuncio_index
 ON LAS_CUATRO_CIFRAS.BI_dim_agente(dni);
 
-CREATE INDEX BI_agente_anuncio_index
+CREATE INDEX BI_comprador_anuncio_index
 ON LAS_CUATRO_CIFRAS.BI_dim_comprador(dni);
 
 CREATE INDEX BI_anuncio_agente_index
