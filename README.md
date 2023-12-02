@@ -5,7 +5,5 @@ Trabajo práctico de la materia Gestión de Datos.
 * **Curso:** K3573
 * **Número de grupo:** 33
 * **Integrantes:**
-  * Abdel Nour, Nazarena - 17771504
-  * Villanueva, Andrea Denise - 1500569
   * Dopazo Rettori, Bianca - 1754117
 * **Email del integrante responsable del grupo:** biandopa@frba.utn.edu.ar
