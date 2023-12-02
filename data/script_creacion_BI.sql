@@ -356,6 +356,12 @@ DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimMedioDePago
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimComprador')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimComprador
 
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimTipoMoneda')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimTipoMoneda
+
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateDimPagoVenta')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateDimPagoVenta
+
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'MigrateFactAnuncio')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.MigrateFactAnuncio
 
