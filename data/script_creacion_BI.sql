@@ -775,7 +775,7 @@ AS
             t.cuatrimestre,
             re.id_rango_etario,
             ea2.id_estado,
-            a.duracion_publicado
+            SUM(DATEDIFF(DAY, a.fecha_publicacion, a.fecha_finalizacion)) AS duracion_publicado
         FROM LAS_CUATRO_CIFRAS.anuncio a
         INNER JOIN LAS_CUATRO_CIFRAS.inmueble i ON a.inmueble = i.id_inmueble
         INNER JOIN LAS_CUATRO_CIFRAS.tipo_inmueble ti ON i.tipo = ti.id_tipo
@@ -797,7 +797,19 @@ AS
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_etario re ON re.rango = LAS_CUATRO_CIFRAS.GetAgeRange(GetAge (ag.fecha_nacimiento))
         INNER JOIN LAS_CUATRO_CIFRAS.estado_anuncio ea ON a.estado = ea.id_estado
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_estado_anuncio ea2 ON ea.descripcion = ea2.descripcion
-        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON
+            -- a revisar
+        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.año = YEAR(a.fecha_publicacion) AND t.cuatrimestre = LAS_CUATRO_CIFRAS.GetCuatrimestre(a.fecha_publicacion)
+        GROUP BY ti2.id_tipo_inmueble,
+                 m2.id_tipo_moneda,
+                 s.id_sucursal,
+                 b2.id_barrio,
+                 ai.id_ambiente,
+                 r.id_rango_m2,
+                 tope.id_tipo_operacion,
+                 t.año,
+                 t.cuatrimestre,
+                 re.id_rango_etario,
+                 ea2.id_estado
     END
 GO
 
@@ -810,12 +822,13 @@ AS
             b2.id_barrio,
             re.id_rango_etario,
             a.duracion,
-            a.comision_total,
+            SUM(a.comision) AS comision_total,
             t.cuatrimestre,
             t.año,
             ea2.id_estado
         FROM LAS_CUATRO_CIFRAS.alquiler a
-        INNER JOIN LAS_CUATRO_CIFRAS.inmueble i ON a.inmueble = i.id_inmueble
+        INNER JOIN LAS_CUATRO_CIFRAS.anuncio an ON a.id_anuncio = an.id_anuncio
+        INNER JOIN LAS_CUATRO_CIFRAS.inmueble i ON an.inmueble = i.id_inmueble
         INNER JOIN LAS_CUATRO_CIFRAS.direccion_inmueble d ON i.id_direccion = d.id_direccion
         INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON d.barrio = b.id_barrio
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_barrio b2 ON b.descripcion = b2.descripcion
@@ -823,9 +836,15 @@ AS
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_provincia p ON p.id_provincia = l.id_provincia
         INNER JOIN LAS_CUATRO_CIFRAS.inquilino inq ON inq.id = a.id_inquilino
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_etario re ON re.rango = LAS_CUATRO_CIFRAS.GetAgeRange(GetAge (inq.fecha_nac))
-        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON
+        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.año = YEAR(a.fecha_inicio) AND t.cuatrimestre = LAS_CUATRO_CIFRAS.GetCuatrimestre(a.fecha_inicio)
         INNER JOIN LAS_CUATRO_CIFRAS.estado_alquiler ea ON a.estado = ea.id_estado
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_estado_alquiler ea2 ON ea.descripcion = ea2.descripcion
+        GROUP BY b2.id_barrio,
+                 re.id_rango_etario,
+                 a.duracion,
+                 t.cuatrimestre,
+                 t.año,
+                 ea2.id_estado
     END
 GO
 
@@ -841,19 +860,26 @@ AS
             t.año,
             t.cuatrimestre,
             r.id_rango_m2,
-            v.comision_total
+            SUM(v.comision_inmob) AS comision_total
         FROM LAS_CUATRO_CIFRAS.venta v
-        INNER JOIN LAS_CUATRO_CIFRAS.inmueble i ON v.inmueble = i.id_inmueble
+        INNER JOIN LAS_CUATRO_CIFRAS.anuncio a ON v.id_anuncio = a.id_anuncio
+        INNER JOIN LAS_CUATRO_CIFRAS.inmueble i ON a.inmueble = i.id_inmueble
         INNER JOIN LAS_CUATRO_CIFRAS.direccion_inmueble d ON i.id_direccion = d.id_direccion
         INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON d.barrio = b.id_barrio
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_barrio b2 ON b.descripcion = b2.descripcion
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_localidad l ON l.id_localidad = b2.id_localidad
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_provincia p ON p.id_provincia = l.id_provincia
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_inmueble ti2 ON ti2.descripcion = i.tipo
-        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_moneda m2 ON m2.descripcion = v.moneda
+        INNER JOIN LAS_CUATRO_CIFRAS.moneda m ON v.id_moneda = m.id_moneda
+        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_moneda m2 ON m2.descripcion = m.descripcion
         INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_rango_m2_inmueble r ON r.rango = LAS_CUATRO_CIFRAS.GetSupRange(i.superficie_total)
-        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON
-
+        INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.año = YEAR(v.fecha_venta) AND t.cuatrimestre = LAS_CUATRO_CIFRAS.GetCuatrimestre(v.fecha_venta)
+        GROUP BY ti2.id_tipo_inmueble,
+                 m2.id_tipo_moneda,
+                 l.id_localidad,
+                 t.año,
+                 t.cuatrimestre,
+                 r.id_rango_m2
     END
 GO
 
