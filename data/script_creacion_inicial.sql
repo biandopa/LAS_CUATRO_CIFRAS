@@ -7,14 +7,17 @@ GO
 
 
 ---------------DROP PREVENTIVO DE FOREIGN KEYS---------------------
-IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'provincia_direccion_fk')
-ALTER TABLE LAS_CUATRO_CIFRAS.direccion DROP CONSTRAINT provincia_direccion_fk
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'barrio_direccion_inmueble_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.direccion_inmueble DROP CONSTRAINT barrio_direccion_inmueble_fk
 
-IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'localidad_direccion_fk')
-ALTER TABLE LAS_CUATRO_CIFRAS.direccion DROP CONSTRAINT localidad_direccion_fk
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'localidad_direccion_sucursal_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.direccion_sucursal DROP CONSTRAINT localidad_direccion_sucursal_fk
 
-IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'barrio_direccion_fk')
-ALTER TABLE LAS_CUATRO_CIFRAS.direccion DROP CONSTRAINT barrio_direccion_fk
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'provincia_localidad_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.localidad DROP CONSTRAINT provincia_localidad_fk
+
+IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'localidad_barrio_fk')
+ALTER TABLE LAS_CUATRO_CIFRAS.barrio DROP CONSTRAINT localidad_barrio_fk
 
 IF EXISTS (SELECT name FROM sys.foreign_keys WHERE name = 'tipo_inmueble_fk')
 ALTER TABLE LAS_CUATRO_CIFRAS.inmueble DROP CONSTRAINT tipo_inmueble_fk
@@ -119,8 +122,11 @@ DROP TABLE LAS_CUATRO_CIFRAS.localidad
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'barrio')
 DROP TABLE LAS_CUATRO_CIFRAS.barrio
 
-IF EXISTS (SELECT name FROM sys.tables WHERE name = 'direccion')
-DROP TABLE LAS_CUATRO_CIFRAS.direccion
+IF EXISTS (SELECT name FROM sys.tables WHERE name = 'direccion_inmueble')
+DROP TABLE LAS_CUATRO_CIFRAS.direccion_inmueble
+
+IF EXISTS (SELECT name FROM sys.tables WHERE name = 'direccion_sucursal')
+DROP TABLE LAS_CUATRO_CIFRAS.direccion_sucursal
 
 IF EXISTS (SELECT name FROM sys.tables WHERE name = 'tipo_inmueble')
 DROP TABLE LAS_CUATRO_CIFRAS.tipo_inmueble
@@ -210,9 +216,11 @@ IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'barrio_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.barrio_migration
 
 
-IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'direccion_migration')
-DROP PROCEDURE LAS_CUATRO_CIFRAS.direccion_migration
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'direccion_inmueble_migration')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.direccion_inmueble_migration
 
+IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'direccion_sucursal_migration')
+DROP PROCEDURE LAS_CUATRO_CIFRAS.direccion_sucursal_migration
 
 IF EXISTS(SELECT [name] FROM sys.procedures WHERE [name] = 'tipo_inmueble_migration')
 DROP PROCEDURE LAS_CUATRO_CIFRAS.tipo_inmueble_migration
@@ -353,6 +361,9 @@ CREATE TABLE LAS_CUATRO_CIFRAS.localidad
     id_localidad numeric(18,0) IDENTITY(1,1)
         CONSTRAINT localidad_pk
             PRIMARY KEY,
+    id_provincia numeric(18,0) NOT NULL
+        CONSTRAINT provincia_localidad_fk
+            REFERENCES LAS_CUATRO_CIFRAS.provincia,
     descripcion nvarchar(100) NOT NULL
 )
 
@@ -364,28 +375,40 @@ CREATE TABLE LAS_CUATRO_CIFRAS.barrio
     id_barrio numeric(18,0) IDENTITY(1,1)
         CONSTRAINT barrio_pk
             PRIMARY KEY,
+    id_localidad numeric(18,0) NOT NULL
+        CONSTRAINT localidad_barrio_fk
+            REFERENCES LAS_CUATRO_CIFRAS.localidad,
     descripcion nvarchar(100) NOT NULL
 )
 
 
 /* Se crea la tabla dirección para almacenar
+   y relacionar los datos de los ids de localidad
+   y provincia que están tipíficados a un nombre
+   de calle y poder utilizarlos en la tabla sucursal*/
+CREATE TABLE LAS_CUATRO_CIFRAS.direccion_sucursal
+(
+    id_direccion numeric(18,0) IDENTITY(1,1)
+        CONSTRAINT direccion_sucursal_pk
+            PRIMARY KEY,
+    id_localidad numeric(18,0) NOT NULL
+        CONSTRAINT localidad_direccion_sucursal_fk
+            REFERENCES LAS_CUATRO_CIFRAS.localidad,
+    calle nvarchar(100) NOT NULL,
+)
+
+/* Se crea la tabla dirección_inmueble para almacenar
    y relacionar los datos de los ids de barrio,
    localidad y provincia que están tipíficados
    a un nombre de calle y poder utilizarlos en
-   las tablas inmueble y sucursal*/
-CREATE TABLE LAS_CUATRO_CIFRAS.direccion
+   la tabla inmueble*/
+CREATE TABLE LAS_CUATRO_CIFRAS.direccion_inmueble
 (
     id_direccion numeric(18,0) IDENTITY(1,1)
-        CONSTRAINT direccion_pk
+        CONSTRAINT direccion_inmueble_pk
             PRIMARY KEY,
-    provincia numeric(18,0) NOT NULL
-        CONSTRAINT provincia_direccion_fk
-            REFERENCES LAS_CUATRO_CIFRAS.provincia,
-    localidad numeric(18,0) NOT NULL
-        CONSTRAINT localidad_direccion_fk
-            REFERENCES LAS_CUATRO_CIFRAS.localidad,
-    barrio numeric(18,0)
-        CONSTRAINT barrio_direccion_fk
+    barrio numeric(18,0) NOT NULL
+        CONSTRAINT barrio_direccion_inmueble_fk
             REFERENCES LAS_CUATRO_CIFRAS.barrio,
     calle nvarchar(100) NOT NULL,
 )
@@ -487,7 +510,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.inmueble
             REFERENCES LAS_CUATRO_CIFRAS.propietario,
     id_direccion numeric(18,0) NOT NULL
         CONSTRAINT direccion_inmueble_fk
-            REFERENCES LAS_CUATRO_CIFRAS.direccion,
+            REFERENCES LAS_CUATRO_CIFRAS.direccion_inmueble,
     ambientes nvarchar(100) NOT NULL,
     superficie_total numeric(18,2) NOT NULL,
     disposicion numeric(18,0)
@@ -530,7 +553,7 @@ CREATE TABLE LAS_CUATRO_CIFRAS.sucursal
     nombre nvarchar(100) NOT NULL,
     direccion numeric(18,0) NOT NULL
         CONSTRAINT direccion_sucursal_fk
-            REFERENCES LAS_CUATRO_CIFRAS.direccion,
+            REFERENCES LAS_CUATRO_CIFRAS.direccion_sucursal,
     telefono numeric(18,0),
 )
 
@@ -805,14 +828,12 @@ GO
 /* Se crean los índices para las tablas de la base de datos
    que poseen foreign keys, las cuales son consultadas
    con mayor frecuencia*/
-CREATE INDEX direc_provincia_index
-ON LAS_CUATRO_CIFRAS.direccion(provincia);
 
-CREATE INDEX direc_localidad_index
-ON LAS_CUATRO_CIFRAS.direccion(localidad);
+CREATE INDEX direc_sucursal_localidad_index
+ON LAS_CUATRO_CIFRAS.direccion_sucursal(id_localidad);
 
-CREATE INDEX direc_barrio_index
-ON LAS_CUATRO_CIFRAS.direccion(barrio);
+CREATE INDEX direc_inmueble_barrio_index
+ON LAS_CUATRO_CIFRAS.direccion_inmueble(barrio);
 
 CREATE INDEX propietario_inmueble_index
 ON LAS_CUATRO_CIFRAS.propietario(dni);
@@ -883,13 +904,15 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.localidad_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.localidad(descripcion)
-    SELECT DISTINCT INMUEBLE_LOCALIDAD
-    FROM gd_esquema.Maestra
+    INSERT INTO LAS_CUATRO_CIFRAS.localidad(descripcion, id_provincia)
+    SELECT DISTINCT m.INMUEBLE_LOCALIDAD, p.id_provincia
+    FROM gd_esquema.Maestra m
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.INMUEBLE_PROVINCIA = p.descripcion
     WHERE INMUEBLE_LOCALIDAD IS NOT NULL
     UNION
-    SELECT DISTINCT SUCURSAL_LOCALIDAD
-    FROM gd_esquema.Maestra
+    SELECT DISTINCT m.SUCURSAL_LOCALIDAD, p.id_provincia
+    FROM gd_esquema.Maestra m
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.SUCURSAL_PROVINCIA = p.descripcion
     WHERE SUCURSAL_LOCALIDAD IS NOT NULL
 END
 GO
@@ -897,27 +920,33 @@ GO
 CREATE PROCEDURE LAS_CUATRO_CIFRAS.barrio_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.barrio(descripcion)
-    SELECT DISTINCT INMUEBLE_BARRIO
-    FROM gd_esquema.Maestra
+    INSERT INTO LAS_CUATRO_CIFRAS.barrio(descripcion, id_localidad)
+    SELECT DISTINCT m.INMUEBLE_BARRIO, l.id_localidad
+    FROM gd_esquema.Maestra m
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.INMUEBLE_PROVINCIA = p.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion AND l.id_provincia = p.id_provincia
     WHERE INMUEBLE_BARRIO IS NOT NULL
 END
 GO
 
-CREATE PROCEDURE LAS_CUATRO_CIFRAS.direccion_migration
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.direccion_inmueble_migration
 AS
 BEGIN
-    INSERT INTO LAS_CUATRO_CIFRAS.direccion(calle,provincia,localidad,barrio)
-    SELECT DISTINCT m.INMUEBLE_DIRECCION, p.id_provincia, l.id_localidad, b.id_barrio
+    INSERT INTO LAS_CUATRO_CIFRAS.direccion_inmueble(calle,barrio)
+    SELECT DISTINCT m.INMUEBLE_DIRECCION, b.id_barrio
     FROM gd_esquema.Maestra m
     INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.INMUEBLE_PROVINCIA = p.descripcion
     INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion
     INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
     WHERE m.INMUEBLE_DIRECCION IS NOT NULL
+END
+GO
 
-    --Se insertan las direcciones de las sucursales, las cuales no poseen barrio en la tabla Maestra
-    INSERT INTO LAS_CUATRO_CIFRAS.direccion(calle,provincia,localidad)
-    SELECT DISTINCT m.SUCURSAL_DIRECCION, p.id_provincia, l.id_localidad
+CREATE PROCEDURE LAS_CUATRO_CIFRAS.direccion_sucursal_migration
+AS
+BEGIN
+    INSERT INTO LAS_CUATRO_CIFRAS.direccion_sucursal(calle,id_localidad)
+    SELECT DISTINCT m.SUCURSAL_DIRECCION, l.id_localidad
     FROM gd_esquema.Maestra m
     INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.SUCURSAL_PROVINCIA = p.descripcion
     INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.SUCURSAL_LOCALIDAD = l.descripcion
@@ -1008,12 +1037,10 @@ BEGIN
                                                       AND m.PROPIETARIO_NOMBRE = p.nombre
                                                       AND m.PROPIETARIO_APELLIDO = p.apellido
     INNER JOIN LAS_CUATRO_CIFRAS.provincia pr ON m.INMUEBLE_PROVINCIA = pr.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.direccion d ON m.INMUEBLE_DIRECCION = d.calle
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion AND l.id_provincia = pr.id_provincia
+    INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion AND b.id_localidad = l.id_localidad
+    INNER JOIN LAS_CUATRO_CIFRAS.direccion_inmueble d ON m.INMUEBLE_DIRECCION = d.calle
                                                     AND d.barrio = b.id_barrio
-                                                    AND d.localidad = l.id_localidad
-                                                    AND d.provincia = pr.id_provincia
     INNER JOIN LAS_CUATRO_CIFRAS.disposicion_inmueble di ON m.INMUEBLE_DISPOSICION = di.descripcion
     INNER JOIN LAS_CUATRO_CIFRAS.orientacion_inmueble o ON m.INMUEBLE_ORIENTACION = o.descripcion
     INNER JOIN LAS_CUATRO_CIFRAS.estado_inmueble e ON m.INMUEBLE_ESTADO = e.descripcion
@@ -1042,10 +1069,8 @@ BEGIN
     SELECT DISTINCT SUCURSAL_CODIGO, SUCURSAL_NOMBRE, d.id_direccion, SUCURSAL_TELEFONO
     FROM gd_esquema.Maestra m
     INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON p.descripcion = m.SUCURSAL_PROVINCIA
-    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON l.descripcion = m.SUCURSAL_LOCALIDAD
-    INNER JOIN LAS_CUATRO_CIFRAS.direccion d ON d.calle = m.SUCURSAL_DIRECCION AND
-                                                 d.localidad = l.id_localidad AND
-                                                 d.provincia = p.id_provincia
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON l.descripcion = m.SUCURSAL_LOCALIDAD AND l.id_provincia = p.id_provincia
+    INNER JOIN LAS_CUATRO_CIFRAS.direccion_sucursal d ON d.calle = m.SUCURSAL_DIRECCION AND d.id_localidad = l.id_localidad
     WHERE SUCURSAL_CODIGO IS NOT NULL
 END
 GO
@@ -1271,7 +1296,8 @@ BEGIN TRY
     EXECUTE LAS_CUATRO_CIFRAS.provincia_migration
     EXECUTE LAS_CUATRO_CIFRAS.localidad_migration
     EXECUTE LAS_CUATRO_CIFRAS.barrio_migration
-    EXECUTE LAS_CUATRO_CIFRAS.direccion_migration
+    EXECUTE LAS_CUATRO_CIFRAS.direccion_inmueble_migration
+    EXECUTE LAS_CUATRO_CIFRAS.direccion_sucursal_migration
     EXECUTE LAS_CUATRO_CIFRAS.tipo_inmueble_migration
     EXECUTE LAS_CUATRO_CIFRAS.disposicion_inmueble_migration
     EXECUTE LAS_CUATRO_CIFRAS.estado_inmueble_migration
