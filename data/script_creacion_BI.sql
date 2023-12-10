@@ -485,9 +485,6 @@ GO
 
 -------------------CREACIÓN DE ÍNDICES------------------------
 
---CREATE INDEX BI_dim_ubicacion_index
---ON LAS_CUATRO_CIFRAS.BI_dim_ubicacion(provincia, localidad, barrio);
-
 CREATE INDEX BI_dim_barrio_desc_index
 ON LAS_CUATRO_CIFRAS.BI_dim_barrio(descripcion);
 
@@ -508,6 +505,21 @@ ON LAS_CUATRO_CIFRAS.BI_dim_provincia(descripcion);
 
 CREATE INDEX BI_dim_ubicacion_calle_index
 ON LAS_CUATRO_CIFRAS.BI_dim_ubicacion(calle);
+
+CREATE INDEX BI_dim_fact_anuncio_index
+ON LAS_CUATRO_CIFRAS.BI_fact_anuncio(id_tipo_operacion, id_sucursal, id_tiempo);
+
+CREATE INDEX BI_dim_tipo_operacion_id_index
+ON LAS_CUATRO_CIFRAS.BI_dim_tipo_operacion(id_tipo_operacion);
+
+CREATE INDEX BI_dim_tiempo_index
+ON LAS_CUATRO_CIFRAS.BI_dim_tiempo(id_tiempo);
+
+CREATE INDEX BI_fact_alquiler_index
+ON LAS_CUATRO_CIFRAS.BI_fact_alquiler(id_barrio, id_rango_etario);
+
+CREATE INDEX BI_fact_venta_index
+ON LAS_CUATRO_CIFRAS.BI_fact_venta(id_tipo_inmueble, id_rango_m2);
 
 
 GO
@@ -634,7 +646,7 @@ SELECT
     a.id_ambientes AS ambientes,
     t.año,
     t.cuatrimestre,
-    AVG(a.duracion_publicado) AS duracion_promedio
+    CAST(AVG(a.duracion_publicado) AS NUMERIC(18,0)) AS duracion_promedio_en_dias
 FROM LAS_CUATRO_CIFRAS.BI_fact_anuncio a
 INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON a.id_tiempo = t.id_tiempo
 GROUP BY
@@ -668,16 +680,20 @@ GO
 
 
 CREATE VIEW LAS_CUATRO_CIFRAS.BI_V_Top5BarriosAlquiler AS
-SELECT TOP 5 WITH TIES
+SELECT TOP 5
     a.id_barrio AS barrio,
     a.id_rango_etario AS rango_etario,
     t.año,
     t.cuatrimestre,
-    a.cantidad_alquileres
+    SUM(a.cantidad_alquileres) AS cantidad_alquileres
 FROM LAS_CUATRO_CIFRAS.BI_fact_alquiler a
 INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.id_tiempo = a.id_tiempo
-ORDER BY
-    5 DESC
+GROUP BY
+    a.id_barrio,
+    a.id_rango_etario,
+    t.año,
+    t.cuatrimestre
+ORDER BY 5 DESC
 GO
 
 
@@ -689,7 +705,10 @@ SELECT
         WHEN p.fecha_pago > p.fecha_fin
             THEN 1
         ELSE 0
-        END) AS FLOAT) / COUNT(*) * 100 AS DECIMAL(10,2)) AS porcentaje_incumplimiento
+        END) AS FLOAT)
+             /
+         COUNT(*) * 100
+        AS DECIMAL(10,2)) AS porcentaje_incumplimiento
 FROM LAS_CUATRO_CIFRAS.pago_alquiler p
 GROUP BY p.fecha_pago
 GO
@@ -708,7 +727,6 @@ WITH Incrementos AS (
     INNER JOIN LAS_CUATRO_CIFRAS.pago_alquiler pa ON a.id_alquiler = pa.id_alquiler
     INNER JOIN LAS_CUATRO_CIFRAS.pago_alquiler pa2 ON a.id_alquiler = pa2.id_alquiler
     INNER JOIN LAS_CUATRO_CIFRAS.estado_alquiler ea ON ea.id_estado = a.estado
-                                                                  AND ea.descripcion = 'Activo'
     WHERE pa.importe > pa2.importe
         AND pa.fecha_pago > pa2.fecha_pago
 )
@@ -728,7 +746,7 @@ SELECT
     t.año,
     t.cuatrimestre,
     a.id_rango_m2 AS rango_m2,
-    AVG(a.precio_total) AS precio_promedio
+    CAST(AVG(a.precio_total) AS NUMERIC(18,2)) AS precio_promedio
 FROM LAS_CUATRO_CIFRAS.BI_fact_venta a
 INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.id_tiempo = a.id_tiempo
 GROUP BY
@@ -746,33 +764,26 @@ SELECT
     an.id_sucursal AS sucursal,
     t.año,
     t.cuatrimestre,
-    (CASE
-        WHEN op.descripcion LIKE '%Alquiler%'
-        THEN (SELECT a.comision_total FROM LAS_CUATRO_CIFRAS.BI_fact_alquiler a
-                                      INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t2 ON t2.año = t.año
-                                                                                           AND t2.mes = t.mes
-                                      WHERE a.id_barrio = an.id_barrio
-                                      AND a.id_rango_etario = an.id_rango_etario)
-        ELSE (SELECT v.comision_total FROM LAS_CUATRO_CIFRAS.BI_fact_venta v
-                                      INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t2 ON t2.año = t.año
-                                                                                           AND t2.mes = t.mes
-                                      WHERE v.id_tipo_inmueble = an.id_tipo_inmueble
-                                      AND v.id_rango_m2 = an.id_rango_m2)
-        END
-        ) AS comision_promedio
+    CASE
+        WHEN op.descripcion LIKE '%Alquiler%' THEN AVG(a.comision_total)
+        ELSE AVG(v.comision_total)
+    END AS comision_promedio
 FROM LAS_CUATRO_CIFRAS.BI_fact_anuncio an
-INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.id_tiempo = an.id_tiempo
 INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tipo_operacion op ON an.id_tipo_operacion = op.id_tipo_operacion
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t ON t.id_tiempo = an.id_tiempo
+LEFT JOIN LAS_CUATRO_CIFRAS.BI_fact_alquiler a ON a.id_barrio = an.id_barrio
+                                                      AND a.id_rango_etario = an.id_rango_etario
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t2 ON t2.año = t.año
+                                                   AND t2.mes = t.mes
+LEFT JOIN LAS_CUATRO_CIFRAS.BI_fact_venta v ON v.id_tipo_inmueble = an.id_tipo_inmueble
+                                                   AND v.id_rango_m2 = an.id_rango_m2
+INNER JOIN LAS_CUATRO_CIFRAS.BI_dim_tiempo t3 ON t3.año = t.año
+                                                    AND t3.mes = t.mes
 GROUP BY
     an.id_tipo_operacion,
     an.id_sucursal,
     t.año,
     t.cuatrimestre,
-    t.mes,
-    an.id_barrio,
-    an.id_rango_etario,
-    an.id_tipo_inmueble,
-    an.id_rango_m2,
     op.descripcion
 GO
 
