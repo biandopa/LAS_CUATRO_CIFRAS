@@ -314,6 +314,14 @@ DROP PROCEDURE LAS_CUATRO_CIFRAS.venta_migration
 GO
 
 
+-------------DROP PREVENTIVO DE VIEWS----------------------------
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'V_inmuebles_direccion')
+DROP VIEW LAS_CUATRO_CIFRAS.V_inmuebles_direccion
+
+IF EXISTS(SELECT [name] FROM sys.views WHERE [name] = 'V_sucursales_direccion')
+DROP VIEW LAS_CUATRO_CIFRAS.V_sucursales_direccion
+
+
 -------------DROP PREVENTIVO DE SCHEMA----------------------------
 IF EXISTS (SELECT name FROM sys.schemas WHERE name = 'LAS_CUATRO_CIFRAS')
 DROP SCHEMA LAS_CUATRO_CIFRAS
@@ -829,8 +837,11 @@ GO
    que poseen foreign keys, las cuales son consultadas
    con mayor frecuencia*/
 
-CREATE INDEX direc_sucursal_localidad_index
-ON LAS_CUATRO_CIFRAS.direccion_sucursal(id_localidad);
+CREATE INDEX id_barrio_index
+ON LAS_CUATRO_CIFRAS.barrio(id_barrio);
+
+CREATE INDEX desc_barrio_index
+ON LAS_CUATRO_CIFRAS.barrio(descripcion);
 
 CREATE INDEX direc_inmueble_barrio_index
 ON LAS_CUATRO_CIFRAS.direccion_inmueble(barrio);
@@ -874,6 +885,21 @@ ON LAS_CUATRO_CIFRAS.venta(id_anuncio);
 GO
 
 
+-----------CREACIÓN DE VIEWS------------------
+CREATE VIEW LAS_CUATRO_CIFRAS.V_inmuebles_direccion
+AS
+    SELECT DISTINCT INMUEBLE_CODIGO, INMUEBLE_BARRIO, INMUEBLE_LOCALIDAD, INMUEBLE_PROVINCIA, INMUEBLE_DIRECCION
+    FROM gd_esquema.Maestra
+    WHERE INMUEBLE_CODIGO IS NOT NULL
+GO
+
+CREATE VIEW LAS_CUATRO_CIFRAS.V_sucursales_direccion
+AS
+    SELECT DISTINCT SUCURSAL_CODIGO, SUCURSAL_PROVINCIA, SUCURSAL_LOCALIDAD, SUCURSAL_DIRECCION
+    FROM gd_esquema.Maestra
+    WHERE Maestra.SUCURSAL_CODIGO IS NOT NULL
+GO
+
 
 
 -----------CREACIÓN DE STORED PROCEDURES PARA LA MIGRACIÓN------------------
@@ -905,15 +931,13 @@ CREATE PROCEDURE LAS_CUATRO_CIFRAS.localidad_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.localidad(descripcion, id_provincia)
-    SELECT DISTINCT m.INMUEBLE_LOCALIDAD, p.id_provincia
-    FROM gd_esquema.Maestra m
-    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.INMUEBLE_PROVINCIA = p.descripcion
-    WHERE INMUEBLE_LOCALIDAD IS NOT NULL
+    SELECT DISTINCT d.INMUEBLE_LOCALIDAD, p.id_provincia
+    FROM LAS_CUATRO_CIFRAS.V_inmuebles_direccion d
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON d.INMUEBLE_PROVINCIA = p.descripcion
     UNION
-    SELECT DISTINCT m.SUCURSAL_LOCALIDAD, p.id_provincia
-    FROM gd_esquema.Maestra m
-    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.SUCURSAL_PROVINCIA = p.descripcion
-    WHERE SUCURSAL_LOCALIDAD IS NOT NULL
+    SELECT DISTINCT s.SUCURSAL_LOCALIDAD, p.id_provincia
+    FROM LAS_CUATRO_CIFRAS.V_sucursales_direccion s
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON s.SUCURSAL_PROVINCIA = p.descripcion
 END
 GO
 
@@ -921,11 +945,10 @@ CREATE PROCEDURE LAS_CUATRO_CIFRAS.barrio_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.barrio(descripcion, id_localidad)
-    SELECT DISTINCT m.INMUEBLE_BARRIO, l.id_localidad
-    FROM gd_esquema.Maestra m
-    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.INMUEBLE_PROVINCIA = p.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion AND l.id_provincia = p.id_provincia
-    WHERE INMUEBLE_BARRIO IS NOT NULL
+    SELECT DISTINCT i.INMUEBLE_BARRIO, l.id_localidad
+    FROM LAS_CUATRO_CIFRAS.V_inmuebles_direccion i
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON i.INMUEBLE_PROVINCIA = p.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON i.INMUEBLE_LOCALIDAD = l.descripcion AND l.id_provincia = p.id_provincia
 END
 GO
 
@@ -933,12 +956,11 @@ CREATE PROCEDURE LAS_CUATRO_CIFRAS.direccion_inmueble_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.direccion_inmueble(calle,barrio)
-    SELECT DISTINCT m.INMUEBLE_DIRECCION, b.id_barrio
-    FROM gd_esquema.Maestra m
-    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.INMUEBLE_PROVINCIA = p.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.INMUEBLE_LOCALIDAD = l.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON m.INMUEBLE_BARRIO = b.descripcion
-    WHERE m.INMUEBLE_DIRECCION IS NOT NULL
+    SELECT DISTINCT i.INMUEBLE_DIRECCION, b.id_barrio
+    FROM LAS_CUATRO_CIFRAS.V_inmuebles_direccion i
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON i.INMUEBLE_PROVINCIA = p.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON i.INMUEBLE_LOCALIDAD = l.descripcion AND l.id_provincia = p.id_provincia
+    INNER JOIN LAS_CUATRO_CIFRAS.barrio b ON i.INMUEBLE_BARRIO = b.descripcion AND b.id_localidad = l.id_localidad
 END
 GO
 
@@ -946,11 +968,10 @@ CREATE PROCEDURE LAS_CUATRO_CIFRAS.direccion_sucursal_migration
 AS
 BEGIN
     INSERT INTO LAS_CUATRO_CIFRAS.direccion_sucursal(calle,id_localidad)
-    SELECT DISTINCT m.SUCURSAL_DIRECCION, l.id_localidad
-    FROM gd_esquema.Maestra m
-    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON m.SUCURSAL_PROVINCIA = p.descripcion
-    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON m.SUCURSAL_LOCALIDAD = l.descripcion
-    WHERE m.SUCURSAL_DIRECCION IS NOT NULL
+    SELECT DISTINCT s.SUCURSAL_DIRECCION, l.id_localidad
+    FROM LAS_CUATRO_CIFRAS.V_sucursales_direccion s
+    INNER JOIN LAS_CUATRO_CIFRAS.provincia p ON s.SUCURSAL_PROVINCIA = p.descripcion
+    INNER JOIN LAS_CUATRO_CIFRAS.localidad l ON s.SUCURSAL_LOCALIDAD = l.descripcion AND l.id_provincia = p.id_provincia
 END
 GO
 
